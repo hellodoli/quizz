@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Quizz from './apis/quizz';
 
 function App() {
+  console.log('re-render App');
+  const fish = useSelector((state) => state.fishReducer);
+  const chain = useSelector((state) => state.chainReducer);
+  const dispatch = useDispatch();
+
+  const getQuizz = async () => {
+    const quizzAPI = new Quizz();
+    await quizzAPI.getQuizz();
+    if (quizzAPI.quizzs) {
+      console.log(quizzAPI.quizzs);
+    }
+  };
+
+  useEffect(() => {
+    // getQuizz();
+    setTimeout(() => {
+      dispatch({ type: 'START_FISHING' });
+    }, 2000);
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>{fish && fish.start && <div>Yes, start fishing!!!</div>}</div>
+      <div>{chain && chain.start && <div>Yes, start chain!!!</div>}</div>
     </div>
   );
 }
