@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { all, fork } from 'redux-saga/effects';
+import rootSaga from './sagas';
 import rootReducer from './reducers';
 
 const configureStore = () => {
@@ -10,6 +10,7 @@ const configureStore = () => {
   const middlewares = applyMiddleware(sagaMiddleware);
 
   // sagaMiddleware.run
+  sagaMiddleware.run(rootSaga);
   return createStore(rootReducer, composeEnhancers(middlewares));
 };
 

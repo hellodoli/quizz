@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
+import quizzReducer from './quizz';
 
+/**
+ * just testing reducer
+ */
 const chainReducer = (state = {}, action) => {
   switch (action.type) {
     case 'START_FISHING':
@@ -18,9 +22,11 @@ const fishReducer = (state = {}, action) => {
   }
 };
 
+// combine rootReducer
 const rootReducer = combineReducers({
   fishReducer,
   chainReducer,
+  quizzReducer,
 });
 
 export default rootReducer;
