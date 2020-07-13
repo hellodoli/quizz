@@ -1,33 +1,37 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Quizz from './apis/quizz';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Switch, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import Loadable from 'react-loadable';
+import { getTheme } from './selector/theme';
+
+// Components
+// Containers
+import Home from './containers/Home';
+import Quizzs from './containers/Quizzs';
+
+const Loading = () => <div>Loading...</div>;
+
+const DynamicImport = (component) =>
+  Loadable({
+    loader: component,
+    loading: Loading,
+  });
 
 function App() {
-  console.log('re-render App');
-  const fish = useSelector((state) => state.fishReducer);
-  const chain = useSelector((state) => state.chainReducer);
-  const dispatch = useDispatch();
-
-  const getQuizz = async () => {
-    const quizzAPI = new Quizz();
-    await quizzAPI.getQuizz();
-    if (quizzAPI.quizzs) {
-      console.log(quizzAPI.quizzs);
-    }
-  };
-
-  useEffect(() => {
-    // getQuizz();
-    setTimeout(() => {
-      dispatch({ type: 'START_FISHING' });
-    }, 2000);
-  }, [dispatch]);
-
+  const theme = useSelector(getTheme);
   return (
-    <div className="App">
-      <div>{fish && fish.start && <div>Yes, start fishing!!!</div>}</div>
-      <div>{chain && chain.start && <div>Yes, start chain!!!</div>}</div>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        {/* CSS Global */}
+        <CssBaseline />
+        {/* Main App */}
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/quizzs" component={Quizzs} />
+        </Switch>
+      </div>
+    </ThemeProvider>
   );
 }
 
