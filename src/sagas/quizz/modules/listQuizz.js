@@ -13,8 +13,8 @@ function* getListQuizz() {
       timeout: delay(apiTimeout),
     });
 
-    if (res && res.data) {
-      yield put({ type: GET_LIST_QUIZZ_SUCCESS, payload: res.data });
+    if (res && res.data && res.data.quizzs) {
+      yield put({ type: GET_LIST_QUIZZ_SUCCESS, payload: res.data.quizzs });
     } else {
       yield put({ type: GET_LIST_QUIZZ_FAIL, err: 'No Data!' });
     }

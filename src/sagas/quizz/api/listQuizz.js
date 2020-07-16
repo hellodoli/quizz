@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { quizzDataJSON } from '../../../config/api';
+import { staticDataPath } from '../../../config/api';
 
 function requestListQuizz() {
-  return axios.get(quizzDataJSON);
+  return axios.get(`${staticDataPath}/quizz.json`);
 }
 
 export default requestListQuizz;
