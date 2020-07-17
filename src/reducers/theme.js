@@ -1,6 +1,7 @@
 import { CURRENT_DL_THEME } from '../constants/localStorage';
 import { GET_THEME, CHANGE_DL_THEME } from '../constants/theme';
 import { defaultDLType, defaultTheme, getTheme } from '../theme/theme';
+import { getDataFromLS } from '../utils/localStorage';
 
 function json2String(type) {
   return JSON.stringify({ type });
@@ -9,19 +10,23 @@ function json2String(type) {
 function getInitialTheme() {
   let DLTheme = defaultTheme;
   const ls = window.localStorage;
-  const savedDLTheme = ls.getItem(CURRENT_DL_THEME);
-  if (savedDLTheme) {
-    const obSavedDLTheme = JSON.parse(savedDLTheme);
-    const { type } = obSavedDLTheme;
+
+  const errorCb = () => {
+    ls.removeItem(CURRENT_DL_THEME);
+    ls.setItem(CURRENT_DL_THEME, json2String(defaultDLType));
+  };
+
+  const successCb = (theme) => {
+    const { type } = theme;
     const lType = type.toLowerCase();
     if (lType && (lType === 'dark' || lType === 'light')) {
       DLTheme = getTheme(lType);
     } else {
-      ls.setItem(CURRENT_DL_THEME, json2String(defaultDLType));
+      errorCb();
     }
-  } else {
-    ls.setItem(CURRENT_DL_THEME, json2String(defaultDLType));
-  }
+  };
+
+  getDataFromLS(CURRENT_DL_THEME).then(successCb).catch(errorCb);
   return DLTheme;
 }
 

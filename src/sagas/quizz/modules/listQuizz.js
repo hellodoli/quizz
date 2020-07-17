@@ -27,7 +27,6 @@ function* getListQuizz() {
       yield put({ type: GET_LIST_QUIZZ_FAIL, err: 'Request Timeout!' });
     }
   } catch (error) {
-    console.log(error);
     yield put({ type: GET_LIST_QUIZZ_FAIL, err: error });
   }
 }
