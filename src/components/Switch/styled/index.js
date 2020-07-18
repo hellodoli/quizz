@@ -34,6 +34,9 @@ const switchViewClass = makeStyles((theme) => {
       background: theme.palette.primary.main,
       zIndex: -1,
       transform: ({ isActive }) => isActive && 'translateX(100%)',
+      '&:hover': {
+        opacity: '0.85',
+      },
     },
     icon: {
       width: 20,
@@ -45,6 +48,9 @@ const switchViewClass = makeStyles((theme) => {
         fill: 'currentColor',
         stroke: 'none',
         transition: 'color .1s linear, transform .2s linear',
+      },
+      '&:hover': {
+        color: theme.palette.action.active,
       },
     },
     iconActive: {

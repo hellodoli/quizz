@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getListQuizz } from '../../actions/quizz';
 
-import { getAllQuizz, getNewestQuizz } from '../../selector/quizz';
-import { getView } from '../../selector/layoutView';
+import { getNewestQuizz } from '../../selector/quizz';
+import { getOptions } from '../../selector/options';
 
-import { quizzWrapp } from './styled';
+import { quizzGeneral } from './styled';
 
 // Components
 import { ModalLoading } from '../Loading';
@@ -16,13 +16,13 @@ import QuizzBoard from './QuizzBoard';
 /**
  * Wrapper QuizzBoard
  */
-function QuizzBoardContain() {
-  console.log('re-render');
-  const classes = quizzWrapp();
+function QuizzBoardContain(props) {
+  console.log('re-render QuizzBoardContain');
+  const classes = quizzGeneral();
   const quizzs = useSelector(getNewestQuizz(10));
-  const view = useSelector(getView);
+  const options = useSelector(getOptions);
+  const { view } = options;
   const dispath = useDispatch();
-  console.log('quizzs: ', quizzs);
 
   useEffect(() => {
     dispath(getListQuizz());
@@ -34,7 +34,7 @@ function QuizzBoardContain() {
       <Container>
         <div className={classes.wrapperInner}>
           {quizzs && quizzs.length > 0 && (
-            <QuizzBoard quizzs={quizzs} view={view} />
+            <QuizzBoard quizzs={quizzs} view={view} {...props} />
           )}
         </div>
       </Container>

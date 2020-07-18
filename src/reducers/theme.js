@@ -10,23 +10,23 @@ function json2String(type) {
 function getInitialTheme() {
   let DLTheme = defaultTheme;
   const ls = window.localStorage;
-
-  const errorCb = () => {
+  const errorAction = () => {
     ls.removeItem(CURRENT_DL_THEME);
     ls.setItem(CURRENT_DL_THEME, json2String(defaultDLType));
   };
 
-  const successCb = (theme) => {
-    const { type } = theme;
+  const state = getDataFromLS(CURRENT_DL_THEME);
+  if (state.data) {
+    const { type } = state.data;
+    if (!type) errorAction();
     const lType = type.toLowerCase();
     if (lType && (lType === 'dark' || lType === 'light')) {
       DLTheme = getTheme(lType);
-    } else {
-      errorCb();
     }
-  };
+  } else {
+    errorAction();
+  }
 
-  getDataFromLS(CURRENT_DL_THEME).then(successCb).catch(errorCb);
   return DLTheme;
 }
 

@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 
 import themeReducer from './theme';
 import quizzReducer from './quizz';
-import layoutViewReducer from './layoutView';
+import optionsReducer from './options';
 
 const rootReducer = combineReducers({
   themeReducer,
   quizzReducer,
-  layoutViewReducer,
+  optionsReducer,
 });
 
 export default rootReducer;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link as RouteLink } from 'react-router-dom';
+import clsx from 'clsx';
 import {
   Card,
   CardActionArea,
@@ -9,36 +10,28 @@ import {
   Link,
   IconButton,
   Avatar,
-  Tooltip,
-  withStyles,
+  Grid,
 } from '@material-ui/core';
 import {
   AccountCircle as AccountCircleIcon,
   AccountBoxRounded as AccountBoxRoundedIcon,
+  Favorite as FavoriteIcon,
 } from '@material-ui/icons';
+import { OUT_SOURCE } from '../../constants/outSource';
 import { staticImgPath } from '../../config/api';
 import {
-  quizzBoardItem,
+  quizzGeneral,
+  quizzBoardItemCard,
   quizzBoardItemRow,
   quizzBoardItemActions,
 } from './styled';
 // Components
+import Tooltip from '../Tooltip';
 import LazyImage from './LazyImage';
 
-const ToolTipCustom = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-  arrow: {
-    color: theme.palette.common.white,
-  },
-}))(Tooltip);
-
-function QuizzBoardItem({ quizz }) {
-  const classes = quizzBoardItem();
+function QuizzBoardItemCard({ quizz }) {
+  const gClass = quizzGeneral();
+  const classes = quizzBoardItemCard();
   const aClass = quizzBoardItemActions();
   const { id, title, questions, public_time: publicTime } = quizz;
   const toDetailUrl = `/quizzs/${id}`;
@@ -74,7 +67,7 @@ function QuizzBoardItem({ quizz }) {
         <Avatar
           alt="zing-icon"
           src={`${staticImgPath}/zing_48x48.png`}
-          className={aClass.avatar}
+          className={gClass.avatar}
         />
       </CardActions>
     </Card>
@@ -82,28 +75,88 @@ function QuizzBoardItem({ quizz }) {
 }
 
 function QuizzBoardItemRow({ quizz }) {
-  const { title, author } = quizz;
+  const {
+    title,
+    public_time: publicTime,
+    root_source: rootSource,
+    source,
+  } = quizz;
   const classes = quizzBoardItemRow();
+
+  const getSourceName = (rootS, ss) => {
+    const s = rootS || ss;
+    if (s) {
+      const sources = Object.keys(OUT_SOURCE);
+      const curSource = sources.find((item) => s.includes(item));
+      if (curSource) return OUT_SOURCE[curSource];
+      return 'Unknow';
+    }
+    return 'Unknow';
+  };
+
   return (
-    <div className={classes.rowWrapp}>
-      <div>
+    <div className={classes.root}>
+      <div className={classes.typoWrapp}>
         <Typography variant="subtitle1">{title}</Typography>
       </div>
-      <div>
-        <ToolTipCustom
-          title={author}
-          placement="top"
-          enterDelay={500}
-          leaveDelay={200}
-          arrow
+
+      <div
+        className={clsx(
+          classes.reveal,
+          classes.subTitleWrapp,
+          classes.currentItem
+        )}
+      >
+        <Typography variant="subtitle2">{publicTime}</Typography>
+      </div>
+
+      {source ? (
+        <div className={clsx(classes.reveal, classes.currentItem)}>
+          <Link
+            underline="none"
+            component={RouteLink}
+            to={{ pathname: source }}
+            target="_blank"
+          >
+            <Tooltip
+              title={getSourceName(rootSource, source)}
+              placement="top"
+              enterDelay={500}
+              leaveDelay={200}
+              arrow
+            >
+              <IconButton color="default" size="small">
+                <AccountBoxRoundedIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+        </div>
+      ) : null}
+
+      <div className={clsx(classes.loveWrapp, classes.reveal)}>
+        <IconButton
+          color="default"
+          size="small"
+          className={classes.iconWrapp}
+          title="Add Favorite"
         >
-          <IconButton color="default" size="small">
-            <AccountBoxRoundedIcon />
-          </IconButton>
-        </ToolTipCustom>
+          <FavoriteIcon fontSize="small" />
+        </IconButton>
       </div>
     </div>
   );
 }
 
-export { QuizzBoardItem, QuizzBoardItemRow };
+function QuizzBoardItem({ type, isHasCardGrid = true, ...rest }) {
+  if (type === 'card' && isHasCardGrid) {
+    return (
+      <Grid item xs={12} sm={6} lg={4}>
+        <QuizzBoardItemCard {...rest} />
+      </Grid>
+    );
+  }
+  if (type === 'row') return <QuizzBoardItemRow {...rest} />;
+  return <QuizzBoardItemCard {...rest} />;
+}
+
+export default QuizzBoardItem;

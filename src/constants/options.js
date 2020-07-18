@@ -1,0 +1,1 @@
+export const TOGGLE_TYPE_LAYOUT_VIEW = '@@TOGGLE_TYPE_LAYOUT_VIEW/options';

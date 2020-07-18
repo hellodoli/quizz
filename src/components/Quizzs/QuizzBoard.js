@@ -1,24 +1,15 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { v1 as uuidv1 } from 'uuid';
-import { QuizzBoardItem, QuizzBoardItemRow } from './QuizzBoardItem';
+// Components
+import QuizzBoardItem from './QuizzBoardItem';
 
-function QuizzBoard({ quizzs, view }) {
-  const QuizzBoardItemView = (props) => {
-    if (view === 'card')
-      return (
-        <Grid item xs={12} sm={6} lg={4}>
-          <QuizzBoardItem {...props} />
-        </Grid>
-      );
-    return <QuizzBoardItemRow {...props} />;
-  };
-
+function QuizzBoard({ quizzs, view, ...rest }) {
   return (
-    <div className="quizz-board">
+    <div className={`quizz-board quizz-board--${view}`}>
       <Grid container spacing={view === 'card' ? 3 : 0}>
         {quizzs.map((quizz) => (
-          <QuizzBoardItemView key={uuidv1()} quizz={quizz} />
+          <QuizzBoardItem type={view} key={uuidv1()} quizz={quizz} {...rest} />
         ))}
       </Grid>
     </div>

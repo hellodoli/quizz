@@ -2,7 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import GlobalCss from './theme/GlobalCss';
 import { getTheme } from './selector/theme';
+
 // Containers
 import Home from './containers/Home';
 import Quizzs from './containers/Quizzs';
@@ -21,6 +23,7 @@ function App() {
       <div className="App">
         {/* CSS Global */}
         <CssBaseline />
+        <GlobalCss />
         {/* Main App */}
         <Switch>
           <Route exact path="/" component={Home} />
@@ -30,6 +33,7 @@ function App() {
             render={() => <div>Hello, This is 404 page !!!</div>}
           />
         </Switch>
+        <div className="hello" />
       </div>
     </ThemeProvider>
   );
