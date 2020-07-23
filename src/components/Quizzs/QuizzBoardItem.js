@@ -49,7 +49,6 @@ function QuizzBoardItemCard({ quizz }) {
             image={questions[0].img.url}
             alt={questions[0].img.alt}
             title={questions[0].img.title}
-            height="180"
           />
           <CardContent>
             <Typography variant="subtitle1">{title}</Typography>
@@ -95,67 +94,78 @@ function QuizzBoardItemRow({ quizz }) {
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.typoWrapp}>
-        <Typography variant="subtitle1">{title}</Typography>
-      </div>
+    <Card className={classes.root}>
+      <CardActionArea>
+        <div>
+          <div className={classes.typoWrapp}>
+            <Typography variant="subtitle1">{title}</Typography>
+          </div>
 
-      <div
-        className={clsx(
-          classes.reveal,
-          classes.subTitleWrapp,
-          classes.currentItem
-        )}
-      >
-        <Typography variant="subtitle2">{publicTime}</Typography>
-      </div>
-
-      {source ? (
-        <div className={clsx(classes.reveal, classes.currentItem)}>
-          <Link
-            underline="none"
-            component={RouteLink}
-            to={{ pathname: source }}
-            target="_blank"
+          <div
+            className={clsx(
+              classes.reveal,
+              classes.subTitleWrapp,
+              classes.currentItem
+            )}
           >
-            <Tooltip
-              title={getSourceName(rootSource, source)}
-              placement="top"
-              enterDelay={500}
-              leaveDelay={200}
-              arrow
-            >
-              <IconButton color="default" size="small">
-                <AccountBoxRoundedIcon />
-              </IconButton>
-            </Tooltip>
-          </Link>
-        </div>
-      ) : null}
+            <Typography variant="subtitle2">{publicTime}</Typography>
+          </div>
 
-      <div className={clsx(classes.loveWrapp, classes.reveal)}>
-        <IconButton
-          color="default"
-          size="small"
-          className={classes.iconWrapp}
-          title="Add Favorite"
-        >
-          <FavoriteIcon fontSize="small" />
-        </IconButton>
-      </div>
-    </div>
+          {source ? (
+            <div className={clsx(classes.reveal, classes.currentItem)}>
+              <Link
+                underline="none"
+                component={RouteLink}
+                to={{ pathname: source }}
+                target="_blank"
+              >
+                <IconButton color="default" size="small">
+                  <AccountBoxRoundedIcon />
+                </IconButton>
+              </Link>
+              {/* <Tooltip
+                title={getSourceName(rootSource, source)}
+                placement="top"
+                enterDelay={500}
+                leaveDelay={200}
+                arrow
+              >
+                <IconButton color="default" size="small">
+                  <AccountBoxRoundedIcon />
+                </IconButton>
+              </Tooltip> */}
+            </div>
+          ) : null}
+        </div>
+      </CardActionArea>
+
+      <CardActions>
+        <div className={clsx(classes.loveWrapp, classes.reveal)}>
+          <IconButton
+            color="default"
+            size="small"
+            className={classes.iconWrapp}
+            title="Add Favorite"
+          >
+            <FavoriteIcon fontSize="small" />
+          </IconButton>
+        </div>
+      </CardActions>
+    </Card>
   );
 }
 
-function QuizzBoardItem({ type, isHasCardGrid = true, ...rest }) {
-  if (type === 'card' && isHasCardGrid) {
+function QuizzBoardItem({ isHasCardGrid = true, ...rest }) {
+  const { options } = rest;
+  const { space, view } = options;
+  if (view === 'card' && isHasCardGrid) {
     return (
-      <Grid item xs={12} sm={6} lg={4}>
+      <Grid item xs={12} sm={6} md={4} lg={space === 'eco' ? 3 : 4}>
         <QuizzBoardItemCard {...rest} />
       </Grid>
     );
   }
-  if (type === 'row') return <QuizzBoardItemRow {...rest} />;
+  if (view === 'row') return <QuizzBoardItemRow {...rest} />;
   return <QuizzBoardItemCard {...rest} />;
 }
 

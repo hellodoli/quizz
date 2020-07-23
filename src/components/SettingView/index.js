@@ -1,16 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { v1 as uuidv1 } from 'uuid';
-import { RadioGroup, Radio, FormControlLabel } from '@material-ui/core';
-import { toggleTypeLayoutView } from '../../actions/layoutView';
+import {
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+} from '@material-ui/core';
+import {
+  toggleTypeLayoutView,
+  changeTypeSpaceView,
+  changeTypePreferences,
+} from '../../actions/options';
 import {
   settingView as settingViewClass,
   layoutPreview as layoutPreviewClass,
+  formControlLabel as formControlLabelClass,
+  preferencesLayout as preferencesLayoutClass,
 } from './styled';
 // Components
 import Tooltip from '../Tooltip';
 import SwitchView from '../Switch';
-import RadioCustom from '../Radio';
 
 const LayoutReview = ({ view }) => {
   const classes = layoutPreviewClass();
@@ -44,13 +54,87 @@ const LayoutReview = ({ view }) => {
   );
 };
 
+const SwitchLayoutReView = ({ view, toggle }) => {
+  const titleTooltip = view === 'card' ? 'Row View' : 'Card View';
+  return (
+    <Tooltip
+      title={titleTooltip}
+      placement="top"
+      enterDelay={500}
+      leaveDelay={200}
+      arrow
+    >
+      <div>
+        <SwitchView width={64} isActive={!!(view === 'row')} onClick={toggle} />
+      </div>
+    </Tooltip>
+  );
+};
+
+const SpaceLayout = ({ space, setSpace }) => {
+  const classes = formControlLabelClass();
+  const FormControlLabelCustom = ({ value, label }) => {
+    return (
+      <FormControlLabel
+        classes={classes}
+        label={label}
+        value={value}
+        control={<Radio color="primary" size="small" />}
+      />
+    );
+  };
+  const handleChange = (event) => {
+    setSpace(event.target.value);
+  };
+  return (
+    <RadioGroup
+      aria-label="spaciness"
+      name="spaciness"
+      value={space}
+      onChange={handleChange}
+    >
+      <FormControlLabelCustom label="ECO" value="eco" />
+      <FormControlLabelCustom label="ROOMY" value="roomy" />
+      <FormControlLabelCustom label="COZY" value="cozy" />
+    </RadioGroup>
+  );
+};
+
+const PreferencesLayout = ({ pre, changePre }) => {
+  const { id, value, name } = pre;
+  const classes = preferencesLayoutClass();
+  const handleChangePre = () => {
+    changePre({
+      key: id,
+      value: !value,
+    });
+  };
+  return (
+    <div className={classes.root}>
+      <div className={classes.switch}>
+        <SwitchView
+          width={32}
+          height={16}
+          leftIcon={null}
+          rightIcon={null}
+          isActive={value}
+          onClick={handleChangePre}
+        />
+      </div>
+      <Typography variant="body1">{name}</Typography>
+    </div>
+  );
+};
+
 function SettingView(props) {
   const {
-    options: { view, space },
-    toggleTypeLayoutView: toggle,
+    options: { view, space, preferences },
+    toggleTypeLayoutView: toggleLayoutView, // toggle view
+    changeTypeSpaceView: setSpace, // change space
+    changeTypePreferences: changePre, // change preferences
   } = props;
+  const preValues = Object.values({ ...preferences });
   const classes = settingViewClass();
-  const titleTooltip = view === 'card' ? 'Row View' : 'Card View';
   return (
     <div className={classes.root}>
       <LayoutReview view={view} />
@@ -58,48 +142,24 @@ function SettingView(props) {
       {/* Layout */}
       <div className={classes.item}>
         <div className={classes.itemTitle}>LAYOUT</div>
-        <Tooltip
-          title={titleTooltip}
-          placement="top"
-          enterDelay={500}
-          leaveDelay={200}
-          arrow
-        >
-          <div>
-            <SwitchView
-              width={64}
-              isActive={!!(view === 'row')}
-              onClick={toggle}
-            />
-          </div>
-        </Tooltip>
+        <div className={classes.itemBody}>
+          <SwitchLayoutReView toggle={toggleLayoutView} view={view} />
+        </div>
       </div>
       {/* Spaciness */}
       <div className={classes.item}>
         <div className={classes.itemTitle}>SPACINESS</div>
-        <div>
-          <RadioGroup
-            aria-label="gender"
-            name="gender1"
-            value={space}
-            // onChange={handleChange}
-          >
-            <FormControlLabel
-              value="eco"
-              control={<RadioCustom color="primary" size="small" />}
-              label="ECO"
-            />
-            <FormControlLabel
-              value="roomy"
-              control={<RadioCustom color="primary" size="small" font />}
-              label="ROOMY"
-            />
-            <FormControlLabel
-              value="cozy"
-              control={<RadioCustom color="primary" size="small" />}
-              label="COZY"
-            />
-          </RadioGroup>
+        <div className={classes.itemBody}>
+          <SpaceLayout space={space} setSpace={setSpace} />
+        </div>
+      </div>
+      {/* Preferences */}
+      <div className={classes.item}>
+        <div className={classes.itemTitle}>Preferences</div>
+        <div className={classes.itemBody}>
+          {preValues.map((pre) => (
+            <PreferencesLayout key={pre.id} pre={pre} changePre={changePre} />
+          ))}
         </div>
       </div>
     </div>
@@ -110,4 +170,8 @@ const mapStateToProps = (state) => ({
   options: state.optionsReducer,
 });
 
-export default connect(mapStateToProps, { toggleTypeLayoutView })(SettingView);
+export default connect(mapStateToProps, {
+  toggleTypeLayoutView,
+  changeTypeSpaceView,
+  changeTypePreferences,
+})(SettingView);

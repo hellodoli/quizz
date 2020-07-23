@@ -24,6 +24,7 @@ function Header() {
           </div>
         </Container>
       </div>
+      {/* Setting View */}
       {isOpenSetting && <SettingView />}
     </div>
   );

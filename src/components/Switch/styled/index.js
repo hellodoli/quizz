@@ -1,6 +1,22 @@
 import { makeStyles } from '@material-ui/core';
 
 const switchViewClass = makeStyles((theme) => {
+  const renderTransform = (isActive, defaultPos) => {
+    const trans = 'translateX(100%)';
+    if (defaultPos === 'left') {
+      if (isActive) return trans;
+      return null;
+    }
+    if (defaultPos === 'right') {
+      if (isActive) return null;
+      return trans;
+    }
+  };
+  const renderBgHolder = (isHasIcon, isActive) => {
+    if (isHasIcon) return theme.palette.primary.main;
+    if (isActive) return theme.palette.primary.main;
+    return theme.palette.action.disabled;
+  };
   return {
     rootSwitchView: {
       position: 'relative',
@@ -31,9 +47,11 @@ const switchViewClass = makeStyles((theme) => {
       height: '100%',
       willChange: 'transform',
       transition: 'transform .2s linear',
-      background: theme.palette.primary.main,
+      background: ({ isHasIcon, isActive }) =>
+        renderBgHolder(isHasIcon, isActive),
       zIndex: -1,
-      transform: ({ isActive }) => isActive && 'translateX(100%)',
+      transform: ({ isActive, defaultPos }) =>
+        renderTransform(isActive, defaultPos),
       '&:hover': {
         opacity: '0.85',
       },

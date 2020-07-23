@@ -30,15 +30,16 @@ export const quizzBoardItemCard = makeStyles((theme) => {
       '& .MuiLink-root': {
         // hover effect
         '&:hover': {
-          '& > .MuiCardActionArea-root > img': {
-            transform: 'scale(1.05)',
+          '& > .MuiCardActionArea-root img.loaded': {
+            transform: 'scale(1.025)',
           },
         },
         '& > .MuiCardActionArea-root': {
+          display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
-          '& > img': {
-            transition: 'transform .4s ease-out',
+          '& img': {
+            transition: 'transform .4s ease-out, opacity 0.1s ease-in-out',
           },
         },
         '& .MuiTypography-root': {
@@ -60,14 +61,12 @@ export const quizzBoardItemRow = makeStyles((theme) => {
   return {
     root: {
       position: 'relative',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
       width: '100%',
-      padding: '.875rem 1.5rem',
+      // padding: '.875rem 1.5rem',
       overflow: 'hidden',
       background: theme.palette.background.paper,
       borderBottom: `1px solid ${theme.palette.background.default}`,
+      borderRadius: 0,
       cursor: 'pointer',
       '&:first-child': {
         borderTopLeftRadius: '8px',
@@ -77,8 +76,13 @@ export const quizzBoardItemRow = makeStyles((theme) => {
         borderBottomLeftRadius: '8px',
         borderBottomRightRadius: '8px',
       },
+      '& .MuiCardContent-root': {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
       '&:hover $reveal': {
-        transform: 'translateX(-56px)',
+        transform: 'translateX(-60px)',
       },
       '&:hover $reveal$loveWrapp': {
         transform: 'translateX(-100%)',
@@ -113,7 +117,9 @@ export const quizzBoardItemRow = makeStyles((theme) => {
       color: theme.palette.text.secondary,
     },
     currentItem: {
-      marginLeft: '.5rem',
+      '& + $currentItem': {
+        marginLeft: '.5rem',
+      },
     },
   };
 });

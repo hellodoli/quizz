@@ -1,18 +1,27 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
-import { staticImgPath } from '../../config/api';
 
 const lazyImageClass = makeStyles(() => ({
-  root: {
+  wrapp: {
+    position: 'relative',
+    width: '100%',
+    paddingTop: ({ ratio }) => (ratio === '1x1' ? '100%' : '56.25%'),
+  },
+  img: {
     display: 'block',
-    opacity: ({ loaded }) => (loaded ? '1' : '0'),
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     width: '100%',
     transition: 'opacity 0.1s ease-in-out',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     objectFit: 'cover',
+    opacity: ({ loaded }) => (loaded ? '1' : '0'),
   },
 }));
 
@@ -26,10 +35,10 @@ const elementInViewport = (el) => {
 };
 
 function LazyImage(props) {
-  const { image: src, keepRatio, width, placeholder } = props;
+  const { image: src, ratio, width, height, placeholder, alt, title } = props;
 
   const [loaded, setLoaded] = useState(false);
-  const classes = lazyImageClass({ loaded });
+  const classes = lazyImageClass({ loaded, ratio });
   const ref = useRef();
 
   const handleScroll = useCallback(() => {
@@ -39,18 +48,16 @@ function LazyImage(props) {
       const imgLoaded = new Image();
       imgLoaded.src = src;
       imgLoaded.onload = () => {
-        const ratio = imgLoaded.width / imgLoaded.height;
-        ele.setAttribute('src', src);
-
-        if (keepRatio) {
-          ele.setAttribute('height', width / ratio);
-        }
+        ele.src = src;
+        ele.alt = alt;
+        ele.title = title;
+        ele.setAttribute('width', width);
+        ele.setAttribute('height', height);
         ele.classList.add('loaded');
       };
-
       setLoaded(true);
     }
-  }, [src, keepRatio, loaded, width]);
+  }, [alt, height, loaded, src, title, width]);
 
   useEffect(() => {
     handleScroll();
@@ -61,23 +68,34 @@ function LazyImage(props) {
     };
   }, [handleScroll]);
   return (
-    // eslint-disable-next-line jsx-a11y/alt-text
-    <img ref={ref} src={placeholder} className={classes.root} {...props} />
+    <div className={classes.wrapp}>
+      <img
+        ref={ref}
+        src={placeholder}
+        alt=""
+        title=""
+        className={classes.img}
+      />
+    </div>
   );
 }
 
 LazyImage.defaultProps = {
-  placeholder: `${staticImgPath}/placeholder.png`,
+  placeholder: null,
+  title: '',
   width: '100%',
   height: '100%',
+  ratio: '16x9',
 };
 
 LazyImage.propTypes = {
   image: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  title: PropTypes.string,
   placeholder: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  ratio: PropTypes.string,
 };
 
 export default LazyImage;

@@ -5,17 +5,17 @@ const settingView = makeStyles((theme) => {
   return {
     root: {
       display: 'flex',
-      alignItems: 'center',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
       overflow: 'hidden',
-      height: 'var(--setting-view-height)',
       padding: `${pxToRem(24)} ${pxToRem(16)}`,
       background: theme.palette.background.secondary,
       zIndex: theme.zIndex.appBar,
       '& > *': {
-        margin: `0 ${pxToRem(16)}`,
+        margin: `0 1rem`,
       },
       '& > .separator': {
-        height: '100%',
+        height: 'auto',
       },
     },
     item: {
@@ -28,8 +28,16 @@ const settingView = makeStyles((theme) => {
       color: theme.palette.action.disabled,
       textTransform: 'uppercase',
       letterSpacing: '.8px',
-      lineHeight: '20px',
       marginBottom: '1rem',
+    },
+    itemBody: {
+      fontSize: '.75rem',
+      color: theme.palette.action.disabled,
+      textTransform: 'uppercase',
+      '& .MuiTypography-body1': {
+        fontSize: '.75rem',
+        fontWeight: 700,
+      },
     },
   };
 });
@@ -87,4 +95,25 @@ const layoutPreview = makeStyles((theme) => {
   };
 });
 
-export { settingView, layoutPreview };
+const formControlLabel = makeStyles(() => ({
+  root: {
+    marginLeft: '-7px',
+    '& .MuiRadio-root': {
+      padding: '5px',
+      marginRight: '5px',
+    },
+  },
+}));
+
+const preferencesLayout = makeStyles(() => ({
+  root: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    verticalAlign: 'middle',
+  },
+  switch: {
+    marginRight: '5px',
+  },
+}));
+
+export { settingView, layoutPreview, formControlLabel, preferencesLayout };
