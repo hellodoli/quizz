@@ -1,172 +1,55 @@
 import React from 'react';
-import { Link as RouteLink } from 'react-router-dom';
-import clsx from 'clsx';
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  Typography,
-  Link,
-  IconButton,
-  Avatar,
-  Grid,
-} from '@material-ui/core';
-import {
-  AccountCircle as AccountCircleIcon,
-  AccountBoxRounded as AccountBoxRoundedIcon,
-  Favorite as FavoriteIcon,
-} from '@material-ui/icons';
-import { OUT_SOURCE } from '../../constants/outSource';
-import { staticImgPath } from '../../config/api';
-import {
-  quizzGeneral,
-  quizzBoardItemCard,
-  quizzBoardItemRow,
-  quizzBoardItemActions,
-} from './styled';
+import { Grid, useMediaQuery } from '@material-ui/core';
 // Components
-import Tooltip from '../Tooltip';
-import LazyImage from './LazyImage';
+import QuizzBoardItemCard from './QuizzBoardItemCard';
+import QuizzBoardItemRow from './QuizzBoardItemRow';
 
-function QuizzBoardItemCard({ quizz }) {
-  const gClass = quizzGeneral();
-  const classes = quizzBoardItemCard();
-  const aClass = quizzBoardItemActions();
-  const { id, title, questions, public_time: publicTime } = quizz;
-  const toDetailUrl = `/quizzs/${id}`;
-
-  return (
-    <Card classes={classes}>
-      <Link
-        underline="none"
-        component={RouteLink}
-        to={toDetailUrl}
-        color="textPrimary"
-      >
-        <CardActionArea>
-          <LazyImage
-            image={questions[0].img.url}
-            alt={questions[0].img.alt}
-            title={questions[0].img.title}
-          />
-          <CardContent>
-            <Typography variant="subtitle1">{title}</Typography>
-          </CardContent>
-        </CardActionArea>
-      </Link>
-      {/* Actions group (not stable) */}
-      <CardActions>
-        <div className={aClass.containWrapp}>
-          <IconButton color="default">
-            <AccountCircleIcon />
-          </IconButton>
-          <Typography variant="subtitle2">{publicTime}</Typography>
-        </div>
-        <Avatar
-          alt="zing-icon"
-          src={`${staticImgPath}/zing_48x48.png`}
-          className={gClass.avatar}
-        />
-      </CardActions>
-    </Card>
-  );
-}
-
-function QuizzBoardItemRow({ quizz }) {
-  const {
-    title,
-    public_time: publicTime,
-    root_source: rootSource,
-    source,
-  } = quizz;
-  const classes = quizzBoardItemRow();
-
-  const getSourceName = (rootS, ss) => {
-    const s = rootS || ss;
-    if (s) {
-      const sources = Object.keys(OUT_SOURCE);
-      const curSource = sources.find((item) => s.includes(item));
-      if (curSource) return OUT_SOURCE[curSource];
-      return 'Unknow';
-    }
-    return 'Unknow';
+/*
+  - Eco (default): lg(1280) 4 - 12 || md(960) 3 || sm (600) 2
+  - Cozy: lg(1280) 3 - 24 || sm(600) 2 - 24
+  - Roomy: lg(1280) 3 - 12 || sm(600) 2 - 12
+*/
+const getGridSpace = (space) => {
+  const uMQ = useMediaQuery;
+  const gridSpace = {
+    xs: 12,
+    sm: 6,
+    md: 6,
+    lg: 4,
   };
 
-  return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        <div>
-          <div className={classes.typoWrapp}>
-            <Typography variant="subtitle1">{title}</Typography>
-          </div>
+  if (space === 'eco') {
+    const isLg = uMQ((theme) => theme.breakpoints.up('lg'));
+    const isMd = uMQ((theme) => theme.breakpoints.up('md'));
+    if (isLg) {
+      gridSpace.lg = 3;
+    } else if (isMd) {
+      gridSpace.md = 4;
+    }
+  }
 
-          <div
-            className={clsx(
-              classes.reveal,
-              classes.subTitleWrapp,
-              classes.currentItem
-            )}
-          >
-            <Typography variant="subtitle2">{publicTime}</Typography>
-          </div>
+  return gridSpace;
+};
 
-          {source ? (
-            <div className={clsx(classes.reveal, classes.currentItem)}>
-              <Link
-                underline="none"
-                component={RouteLink}
-                to={{ pathname: source }}
-                target="_blank"
-              >
-                <IconButton color="default" size="small">
-                  <AccountBoxRoundedIcon />
-                </IconButton>
-              </Link>
-              {/* <Tooltip
-                title={getSourceName(rootSource, source)}
-                placement="top"
-                enterDelay={500}
-                leaveDelay={200}
-                arrow
-              >
-                <IconButton color="default" size="small">
-                  <AccountBoxRoundedIcon />
-                </IconButton>
-              </Tooltip> */}
-            </div>
-          ) : null}
-        </div>
-      </CardActionArea>
+function QuizzBoardItem(props) {
+  const {
+    isHasCardGrid = true,
+    quizz,
+    options: { view, space },
+  } = props;
 
-      <CardActions>
-        <div className={clsx(classes.loveWrapp, classes.reveal)}>
-          <IconButton
-            color="default"
-            size="small"
-            className={classes.iconWrapp}
-            title="Add Favorite"
-          >
-            <FavoriteIcon fontSize="small" />
-          </IconButton>
-        </div>
-      </CardActions>
-    </Card>
-  );
-}
+  const gridSpace = getGridSpace(space);
+  const { xs, sm, md, lg } = gridSpace;
 
-function QuizzBoardItem({ isHasCardGrid = true, ...rest }) {
-  const { options } = rest;
-  const { space, view } = options;
   if (view === 'card' && isHasCardGrid) {
     return (
-      <Grid item xs={12} sm={6} md={4} lg={space === 'eco' ? 3 : 4}>
-        <QuizzBoardItemCard {...rest} />
+      <Grid item xs={xs} sm={sm} md={md} lg={lg}>
+        <QuizzBoardItemCard quizz={quizz} />
       </Grid>
     );
   }
-  if (view === 'row') return <QuizzBoardItemRow {...rest} />;
-  return <QuizzBoardItemCard {...rest} />;
+  if (view === 'row') return <QuizzBoardItemRow quizz={quizz} />;
+  return <QuizzBoardItemCard quizz={quizz} />;
 }
 
 export default QuizzBoardItem;

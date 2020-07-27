@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+// Themes
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import GlobalCss from './theme/GlobalCss';
 import { getTheme } from './selector/theme';
@@ -16,6 +17,10 @@ import Quizzs from './containers/Quizzs';
     loading: () => null,
   }); */
 
+function Page404() {
+  return <div>Hello, This is 404 page !!!!</div>;
+}
+
 function App() {
   const theme = useSelector(getTheme);
   return (
@@ -28,12 +33,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/quizzs" component={Quizzs} />
-          <Route
-            path="*"
-            render={() => <div>Hello, This is 404 page !!!</div>}
-          />
+          <Route path="*" component={Page404} />
         </Switch>
-        <div className="hello" />
       </div>
     </ThemeProvider>
   );

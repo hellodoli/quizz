@@ -6,6 +6,10 @@ export const quizzGeneral = makeStyles((theme) => {
       position: 'relative',
       width: '100%',
     },
+    wrapperMainVar: {
+      // '--gap-head': ({ options }) => getGapHead(options),
+    },
+    // All other style in $wrapperMain
     wrapperInner: {
       padding: `${theme.typography.pxToRem(80)} 0`,
     },

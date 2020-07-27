@@ -44,14 +44,40 @@ const settingView = makeStyles((theme) => {
 
 const layoutPreview = makeStyles((theme) => {
   const bg = theme.palette.background;
+  const getCSSVar = (view, space) => {
+    const isCardView = !!(view === 'card');
+
+    const layoutWidth = 120;
+    const layoutGap = space === 'eco' ? 12 : 16;
+    const cardGap = space === 'roomy' ? 4 : 2;
+    let cardPerRow = 1;
+    if (view === 'card') {
+      if (space === 'eco') cardPerRow = 4;
+      else cardPerRow = 3;
+    }
+    const cardListContainer = layoutWidth - 2 * layoutGap + 2 * cardGap;
+    const cardWidth = cardListContainer / cardPerRow - 2 * cardGap;
+
+    return {
+      '--layout-width': `${layoutWidth}px`,
+      '--layout-height': '80px',
+      '--layout-gap': `${layoutGap}px`,
+      '--flex-direction': isCardView ? 'row' : 'column',
+      '--card-gap-list': isCardView ? `-${cardGap}px` : 0,
+      '--card-gap-item': isCardView ? `${cardGap}px` : 0,
+      '--card-width': `${cardWidth}px`,
+      '--card-height': isCardView ? `${cardWidth}px` : '8px',
+      '--card-border': isCardView ? '4px' : '2px',
+    };
+  };
   return {
+    layoutPreviewCSSVar: ({ view, space }) => getCSSVar(view, space),
     layoutPreview: {
       display: 'flex',
-      width: '120px',
-      height: '80px',
       flexDirection: 'column',
-      alignItems: 'stretch',
-      padding: '12px 12px 0',
+      alignSelf: 'flex-start',
+      width: 'var(--layout-width)',
+      padding: 'var(--layout-gap)',
       background: bg.default,
       borderRadius: '8px',
     },
@@ -67,29 +93,18 @@ const layoutPreview = makeStyles((theme) => {
         margin: '0 1.5px',
       },
     },
-    layouttPreviewPostCard: {
+    layouttPreviewPost: {
       display: 'flex',
+      flexDirection: 'var(--flex-direction)',
       flexWrap: 'wrap',
-      margin: '-2px',
+      margin: 'var(--card-gap-list)',
       '& > span': {
-        width: '16px',
-        height: '16px',
-        borderRadius: '4px',
+        width: 'var(--card-width)',
+        height: 'var(--card-height)',
+        borderRadius: 'var(--card-border)',
         background: theme.palette.primary.main,
-        margin: '2px',
-      },
-    },
-    layouttPreviewPostRow: {
-      display: 'flex',
-      flexFlow: 'column nowrap',
-      '& > span': {
-        width: '100%',
-        height: '8px',
-        borderRadius: '2px',
-        background: theme.palette.primary.main,
-        '& + span': {
-          marginTop: '4px',
-        },
+        margin: 'var(--card-gap-item)',
+        marginBottom: ({ view }) => view === 'row' && '4px',
       },
     },
   };

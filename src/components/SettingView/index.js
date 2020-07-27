@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import clsx from 'clsx';
 import { v1 as uuidv1 } from 'uuid';
 import {
   RadioGroup,
@@ -22,25 +23,28 @@ import {
 import Tooltip from '../Tooltip';
 import SwitchView from '../Switch';
 
-const LayoutReview = ({ view }) => {
-  const classes = layoutPreviewClass();
+const LayoutReview = ({ view, space }) => {
+  const classes = layoutPreviewClass({ view, space });
   const LayoutPreviewPost = () => {
-    const className =
-      view === 'card'
-        ? classes.layouttPreviewPostCard
-        : classes.layouttPreviewPostRow;
-    const itemPreview =
-      view === 'card' ? Array(10).fill(null) : Array(4).fill(null);
+    const getItemPreView = () => {
+      if (view === 'card') {
+        if (space === 'eco') {
+          return Array(8).fill(null);
+        }
+        return Array(6).fill(null);
+      }
+      return Array(3).fill(null);
+    };
     return (
-      <div className={className}>
-        {itemPreview.map(() => (
+      <div className={classes.layouttPreviewPost}>
+        {getItemPreView().map(() => (
           <span key={uuidv1()} />
         ))}
       </div>
     );
   };
   return (
-    <div className={classes.layoutPreview}>
+    <div className={clsx(classes.layoutPreview, classes.layoutPreviewCSSVar)}>
       {/* preview Top */}
       <div className={classes.layoutPreviewTop}>
         <span />
@@ -137,7 +141,7 @@ function SettingView(props) {
   const classes = settingViewClass();
   return (
     <div className={classes.root}>
-      <LayoutReview view={view} />
+      <LayoutReview view={view} space={space} />
       <div className="separator" />
       {/* Layout */}
       <div className={classes.item}>
