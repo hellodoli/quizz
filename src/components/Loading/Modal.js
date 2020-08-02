@@ -4,13 +4,24 @@ import { Backdrop, CircularProgress } from '@material-ui/core';
 import { modalLoading as modalLoadingClass } from './styled';
 
 function ModalLoading(props) {
-  const { invisible, open, color, isFullScreen } = props;
+  const {
+    invisible,
+    open,
+    isFullScreen,
+    thickness,
+    size,
+    ...otherForProgress
+  } = props;
   const classes = modalLoadingClass({
     isFullScreen,
   });
   return (
     <Backdrop open={open} invisible={invisible} classes={classes}>
-      <CircularProgress color={color} />
+      <CircularProgress
+        thickness={thickness}
+        size={size}
+        {...otherForProgress}
+      />
     </Backdrop>
   );
 }
@@ -18,15 +29,17 @@ function ModalLoading(props) {
 ModalLoading.propTypes = {
   open: PropTypes.bool,
   invisible: PropTypes.bool,
-  color: PropTypes.string,
   isFullScreen: PropTypes.bool,
+  thickness: PropTypes.number,
+  size: PropTypes.number,
 };
 
 ModalLoading.defaultProps = {
   open: true,
   invisible: false,
-  color: 'inherit',
   isFullScreen: true,
+  thickness: 4,
+  size: 50,
 };
 
 export default ModalLoading;

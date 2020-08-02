@@ -1,22 +1,30 @@
 import { makeStyles } from '@material-ui/core';
 
 const switchViewClass = makeStyles((theme) => {
-  const renderTransform = (isActive, defaultPos) => {
+  // Bar
+  const getTransformHolder = ({ isActive, defaultPos }) => {
     const trans = 'translateX(100%)';
-    if (defaultPos === 'left') {
-      if (isActive) return trans;
-      return null;
-    }
     if (defaultPos === 'right') {
       if (isActive) return null;
       return trans;
     }
+    if (isActive) return trans;
+    return null;
   };
-  const renderBgHolder = (isHasIcon, isActive) => {
-    if (isHasIcon) return theme.palette.primary.main;
-    if (isActive) return theme.palette.primary.main;
+  const getBgHolder = ({ isActive, isHasIcon }) => {
+    if (isHasIcon || isActive) return theme.palette.primary.main;
     return theme.palette.action.disabled;
   };
+  const getBorderRadiusHolder = ({ width, circleBar }) =>
+    circleBar ? '50%' : parseInt(width / 10, 10);
+  // Slider
+  const getBorderRadiusSlider = ({ width, circleBar }) => {
+    let bRadius = parseInt(width / 10, 10);
+    if (circleBar && bRadius < 7) bRadius = 7;
+    return bRadius;
+  };
+  // Icon
+  const getWidthIcon = ({ width }) => parseInt(width / 3, 10);
   return {
     rootSwitchView: {
       position: 'relative',
@@ -31,15 +39,16 @@ const switchViewClass = makeStyles((theme) => {
         position: 'absolute',
         top: 0,
         left: 0,
-        borderRadius: 8,
       },
     },
     slider: {
       right: 0,
       bottom: 0,
+      width: '98%',
       height: '87.5%',
-      background: theme.palette.background.default,
       margin: 'auto',
+      background: theme.palette.background.default,
+      borderRadius: (props) => getBorderRadiusSlider(props),
       zIndex: -2,
     },
     holder: {
@@ -47,18 +56,17 @@ const switchViewClass = makeStyles((theme) => {
       height: '100%',
       willChange: 'transform',
       transition: 'transform .2s linear',
-      background: ({ isHasIcon, isActive }) =>
-        renderBgHolder(isHasIcon, isActive),
+      background: (props) => getBgHolder(props),
+      transform: (props) => getTransformHolder(props),
+      borderRadius: (props) => getBorderRadiusHolder(props),
       zIndex: -1,
-      transform: ({ isActive, defaultPos }) =>
-        renderTransform(isActive, defaultPos),
       '&:hover': {
         opacity: '0.85',
       },
     },
     icon: {
-      width: 20,
-      height: 20,
+      width: (props) => getWidthIcon(props),
+      height: (props) => getWidthIcon(props),
       transformOrigin: 'center',
       transition: 'color .1s linear, transform .2s linear',
       color: theme.palette.action.disabled,
@@ -67,13 +75,13 @@ const switchViewClass = makeStyles((theme) => {
         stroke: 'none',
         transition: 'color .1s linear, transform .2s linear',
       },
-      '&:hover': {
+      '&:hover:not($iconActive)': {
         color: theme.palette.action.active,
       },
     },
     iconActive: {
       color: theme.palette.action.active,
-      transform: 'scale(1.2)',
+      transform: 'scale(1.25)',
       pointerEvents: 'none',
     },
   };

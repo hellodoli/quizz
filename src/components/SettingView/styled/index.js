@@ -12,10 +12,11 @@ const settingView = makeStyles((theme) => {
       background: theme.palette.background.secondary,
       zIndex: theme.zIndex.appBar,
       '& > *': {
-        margin: `0 1rem`,
+        margin: '0 2rem',
       },
       '& > .separator': {
         height: 'auto',
+        margin: '0 1.5rem',
       },
     },
     item: {
@@ -31,9 +32,14 @@ const settingView = makeStyles((theme) => {
       marginBottom: '1rem',
     },
     itemBody: {
+      display: 'flex',
+      flexDirection: 'column',
       fontSize: '.75rem',
       color: theme.palette.action.disabled,
       textTransform: 'uppercase',
+      '& > :not(:last-child)': {
+        marginBottom: '.75rem',
+      },
       '& .MuiTypography-body1': {
         fontSize: '.75rem',
         fontWeight: 700,
@@ -44,19 +50,15 @@ const settingView = makeStyles((theme) => {
 
 const layoutPreview = makeStyles((theme) => {
   const bg = theme.palette.background;
-  const getCSSVar = (view, space) => {
+  const getCSSVar = ({ view, space, cardNumber }) => {
     const isCardView = !!(view === 'card');
 
     const layoutWidth = 120;
     const layoutGap = space === 'eco' ? 12 : 16;
     const cardGap = space === 'roomy' ? 4 : 2;
-    let cardPerRow = 1;
-    if (view === 'card') {
-      if (space === 'eco') cardPerRow = 4;
-      else cardPerRow = 3;
-    }
+
     const cardListContainer = layoutWidth - 2 * layoutGap + 2 * cardGap;
-    const cardWidth = cardListContainer / cardPerRow - 2 * cardGap;
+    const cardWidth = cardListContainer / cardNumber - 2 * cardGap;
 
     return {
       '--layout-width': `${layoutWidth}px`,
@@ -71,7 +73,7 @@ const layoutPreview = makeStyles((theme) => {
     };
   };
   return {
-    layoutPreviewCSSVar: ({ view, space }) => getCSSVar(view, space),
+    layoutPreviewCSSVar: (props) => getCSSVar(props),
     layoutPreview: {
       display: 'flex',
       flexDirection: 'column',
@@ -127,7 +129,7 @@ const preferencesLayout = makeStyles(() => ({
     verticalAlign: 'middle',
   },
   switch: {
-    marginRight: '5px',
+    marginRight: '0.5rem',
   },
 }));
 

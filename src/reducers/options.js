@@ -9,7 +9,7 @@ import { checkValidKeyObject } from '../utils/object';
 
 const viewArr = ['card', 'row'];
 const spaceArr = ['roomy', 'cozy', 'eco'];
-const preferencesArr = ['cardAnimation'];
+const preferencesArr = ['cardAnimation', 'dlTheme'];
 
 const defaultOptions = {
   view: 'card',
@@ -19,6 +19,11 @@ const defaultOptions = {
       id: 'cardAnimation',
       name: 'Card Animations',
       value: true,
+    },
+    dlTheme: {
+      id: 'dlTheme',
+      name: 'Light theme',
+      value: false,
     },
   },
 };

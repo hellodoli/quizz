@@ -2,16 +2,28 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const quizzGeneral = makeStyles((theme) => {
   return {
-    wrapperMain: {
+    main: {
       position: 'relative',
       width: '100%',
-    },
-    wrapperMainVar: {
-      // '--gap-head': ({ options }) => getGapHead(options),
+      // general Style
+      '& .quizz-board-item': {
+        '& .quizz-board-item-link img': {
+          transition: 'transform .4s ease-out, opacity 0.1s ease-in-out',
+        },
+      },
     },
     // All other style in $wrapperMain
-    wrapperInner: {
+    inner: {
       padding: `${theme.typography.pxToRem(80)} 0`,
+    },
+    hasCardAnimation: {
+      '& .quizz-board-item': {
+        '& .quizz-board-item-link': {
+          '&:hover img.loaded': {
+            transform: 'scale(1.05)',
+          },
+        },
+      },
     },
     avatar: {
       width: theme.spacing(4),
@@ -20,7 +32,7 @@ export const quizzGeneral = makeStyles((theme) => {
   };
 });
 
-// QuizzBoardItem Card
+// QuizzBoardItem Card (classes)
 export const quizzBoardItemCard = makeStyles((theme) => {
   return {
     root: {
@@ -32,19 +44,10 @@ export const quizzBoardItemCard = makeStyles((theme) => {
         height: '100%',
       },
       '& .MuiLink-root': {
-        // hover effect
-        '&:hover': {
-          '& > .MuiCardActionArea-root img.loaded': {
-            transform: 'scale(1.025)',
-          },
-        },
         '& > .MuiCardActionArea-root': {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
-          '& img': {
-            transition: 'transform .4s ease-out, opacity 0.1s ease-in-out',
-          },
         },
         '& .MuiTypography-root': {
           textAlign: 'center',
@@ -133,6 +136,9 @@ export const quizzBoardItemActions = makeStyles((theme) => {
     containWrapp: {
       display: 'flex',
       alignItems: 'center',
+      '& > :not(:first-child)': {
+        marginLeft: '.5rem',
+      },
       '& .MuiTypography-root': {
         fontStyle: 'italic',
         color: theme.palette.text.secondary,

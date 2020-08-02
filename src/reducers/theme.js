@@ -1,5 +1,9 @@
 import { CURRENT_DL_THEME } from '../constants/localStorage';
-import { GET_THEME, CHANGE_DL_THEME } from '../constants/theme';
+import {
+  GET_THEME,
+  CHANGE_DL_THEME,
+  PRE_CHANGE_DL_THEME,
+} from '../constants/theme';
 import { defaultDLType, defaultTheme, getTheme } from '../theme/theme';
 import { getDataFromLS } from '../utils/localStorage';
 
@@ -33,9 +37,10 @@ function getInitialTheme() {
 const themeReducer = (state = getInitialTheme(), action) => {
   switch (action.type) {
     case GET_THEME:
+    case PRE_CHANGE_DL_THEME:
       return state;
     case CHANGE_DL_THEME:
-      return getTheme(action.type);
+      return getTheme(action.payload);
     default:
       return state;
   }

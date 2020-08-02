@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 
+const getAllRoot = (state) => Object.values(state.quizzReducer.allData);
+
 const getAll = (state) => Object.values(state.quizzReducer.data);
+
+const getLoading = (state) => state.quizzReducer.loading;
 
 const getQuizzNewOrOld = (quizzs, num, type) => {
   const maxLength = quizzs.length;
@@ -20,3 +24,10 @@ export const getNewestQuizz = (num) =>
   createSelector(getAll, (allQuizz) => getQuizzNewOrOld(allQuizz, num, 'new'));
 
 export const getAllQuizz = createSelector(getAll, (allQuizz) => allQuizz);
+
+export const getAllQuizzRoot = createSelector(
+  getAllRoot,
+  (allQuizzRoot) => allQuizzRoot
+);
+
+export const getLoadingQuizz = createSelector(getLoading, (loading) => loading);

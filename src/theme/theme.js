@@ -28,7 +28,9 @@ const theme = {
       },
       light: {
         /* keep default light backgroud */
-        secondary: '#cecece',
+        default: '#e9eaec',
+        paper: '#ffffff',
+        secondary: '#f4f5f6',
       },
     },
   },

@@ -1,9 +1,24 @@
-import { GET_DL_THEME, CHANGE_DL_THEME } from '../constants/theme';
+import {
+  GET_THEME,
+  CHANGE_DL_THEME,
+  PRE_CHANGE_DL_THEME,
+} from '../constants/theme';
 
-export const getDLTheme = () => ({
-  type: GET_DL_THEME,
+export const getTheme = () => ({
+  type: GET_THEME,
 });
 
-export const changeDLTheme = () => ({
+/**
+ * @param {object} preference
+ * @param {string} payload
+ */
+export const preChangeDLTheme = (preference, payload) => ({
+  type: PRE_CHANGE_DL_THEME,
+  preference,
+  payload,
+});
+
+export const changeDLTheme = (payload) => ({
   type: CHANGE_DL_THEME,
+  payload,
 });

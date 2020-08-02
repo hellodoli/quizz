@@ -1,22 +1,10 @@
 import React from 'react';
-import { Link as RouteLink } from 'react-router-dom';
 import clsx from 'clsx';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Link,
-  IconButton,
-} from '@material-ui/core';
-import {
-  AccountBoxRounded as AccountBoxRoundedIcon,
-  Favorite as FavoriteIcon,
-} from '@material-ui/icons';
-import { OUT_SOURCE } from '../../constants/outSource';
-
+import { Card, CardContent, Typography, IconButton } from '@material-ui/core';
+import { Favorite as FavoriteIcon } from '@material-ui/icons';
 import { quizzBoardItemRow } from './styled';
 // Components
-import Tooltip from '../Tooltip';
+import SourceLink from './SourceLink';
 
 function QuizzBoardItemRow({ quizz }) {
   const {
@@ -26,17 +14,6 @@ function QuizzBoardItemRow({ quizz }) {
     source,
   } = quizz;
   const classes = quizzBoardItemRow();
-
-  const getSourceName = (rootS, ss) => {
-    const s = rootS || ss;
-    if (s) {
-      const sources = Object.keys(OUT_SOURCE);
-      const curSource = sources.find((item) => s.includes(item));
-      if (curSource) return OUT_SOURCE[curSource];
-      return 'Unknow';
-    }
-    return 'Unknow';
-  };
 
   return (
     <Card className={classes.root}>
@@ -57,24 +34,7 @@ function QuizzBoardItemRow({ quizz }) {
 
         {source ? (
           <div className={clsx(classes.reveal, classes.currentItem)}>
-            <Link
-              underline="none"
-              component={RouteLink}
-              to={{ pathname: source }}
-              target="_blank"
-            >
-              <Tooltip
-                title={getSourceName(rootSource, source)}
-                placement="top"
-                enterDelay={500}
-                leaveDelay={200}
-                arrow
-              >
-                <IconButton color="default" size="small">
-                  <AccountBoxRoundedIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
+            <SourceLink rootSource={rootSource} source={source} size="small" />
           </div>
         ) : null}
       </CardContent>

@@ -7,26 +7,12 @@ import {
   CardContent,
   Typography,
   Link,
-  IconButton,
 } from '@material-ui/core';
-import { AccountCircle as AccountCircleIcon } from '@material-ui/icons';
-import { OUT_SOURCE } from '../../constants/outSource';
 // Styles
 import { quizzBoardItemCard, quizzBoardItemActions } from './styled';
 // Components
-import Tooltip from '../Tooltip';
+import SourceLink from './SourceLink';
 import LazyImage from './LazyImage';
-
-const getSourceName = (rootS, ss) => {
-  const s = rootS || ss;
-  if (s) {
-    const sources = Object.keys(OUT_SOURCE);
-    const curSource = sources.find((item) => s.includes(item));
-    if (curSource) return OUT_SOURCE[curSource];
-    return 'Unknow';
-  }
-  return 'Unknow';
-};
 
 function QuizzBoardItemCard({ quizz }) {
   const classes = quizzBoardItemCard();
@@ -41,12 +27,13 @@ function QuizzBoardItemCard({ quizz }) {
   } = quizz;
   const toDetailUrl = `/quizzs/${id}`;
   return (
-    <Card classes={classes}>
+    <Card classes={classes} className="quizz-board-item">
       <Link
         underline="none"
         component={RouteLink}
         to={toDetailUrl}
         color="textPrimary"
+        className="quizz-board-item-link"
       >
         <CardActionArea>
           <LazyImage
@@ -59,27 +46,12 @@ function QuizzBoardItemCard({ quizz }) {
           </CardContent>
         </CardActionArea>
       </Link>
-      {/* Actions group (not stable) */}
+      {/* Actions group */}
       <CardActions>
         <div className={aClass.containWrapp}>
-          <Tooltip
-            title="Hello Dolli"
-            placement="top"
-            enterDelay={500}
-            leaveDelay={200}
-            arrow
-          >
-            <IconButton color="default">
-              <AccountCircleIcon />
-            </IconButton>
-          </Tooltip>
+          <SourceLink rootSource={rootSource} source={source} />
           <Typography variant="subtitle2">{publicTime}</Typography>
         </div>
-        {/* <Avatar
-          alt="zing-icon"
-          src={`${staticImgPath}/zing_48x48.png`}
-          className={gClass.avatar}
-        /> */}
       </CardActions>
     </Card>
   );

@@ -31,21 +31,55 @@ function SwitchView(props) {
     rightIcon: RightI,
     isActive,
     defaultPos,
-    ...rest
+    circleBar,
+    width,
+    height,
+    ...rest // onClick, className, ...
   } = props;
 
-  const isHasIcon = !!(LeftI || RightI);
-  const classes = switchViewClass({ isActive, defaultPos, isHasIcon, ...rest });
+  const classes = switchViewClass({
+    isActive,
+    defaultPos,
+    circleBar,
+    isHasIcon: !!(LeftI || RightI),
+    width,
+    height,
+  });
+
+  const activeIconLeftClass = () => {
+    if (LeftI) {
+      if (defaultPos === 'right' && isActive) return true;
+      if (defaultPos === 'left' && !isActive) return true;
+      return false;
+    }
+    return false;
+  };
+  const activeIconRightClass = () => {
+    if (RightI) {
+      if (defaultPos === 'right' && !isActive) return true;
+      if (defaultPos === 'left' && isActive) return true;
+      return false;
+    }
+    return false;
+  };
   const renderIcon = () => {
     return (
       <>
         {LeftI && (
-          <span className={clsx(classes.icon, !isActive && classes.iconActive)}>
+          <span
+            className={clsx(classes.icon, {
+              [classes.iconActive]: activeIconLeftClass(),
+            })}
+          >
             <LeftI />
           </span>
         )}
         {RightI && (
-          <span className={clsx(classes.icon, isActive && classes.iconActive)}>
+          <span
+            className={clsx(classes.icon, {
+              [classes.iconActive]: activeIconRightClass(),
+            })}
+          >
             <RightI />
           </span>
         )}
@@ -70,10 +104,13 @@ SwitchView.defaultProps = {
   height: 32,
   isActive: false,
   defaultPos: 'left',
+  circleBar: false,
 };
 
 SwitchView.propTypes = {
   isActive: PropTypes.bool,
+  defaultPos: PropTypes.oneOf(['left', 'right']),
+  circleBar: PropTypes.bool,
   leftIcon: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.oneOf([false, null]),
@@ -82,9 +119,8 @@ SwitchView.propTypes = {
     PropTypes.func,
     PropTypes.oneOf([false, null]),
   ]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  defaultPos: PropTypes.oneOf(['left', 'right']),
+  width: PropTypes.number,
+  height: PropTypes.number,
 };
 
 export default SwitchView;

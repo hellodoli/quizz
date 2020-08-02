@@ -6,7 +6,7 @@ const header = makeStyles((theme) => {
       display: 'flex',
       width: '100%',
       height: 'var(--header-height)',
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: theme.palette.background.default,
       borderBottom: `1px solid ${theme.palette.divider}`,
       zIndex: theme.zIndex.appBar,
     },
