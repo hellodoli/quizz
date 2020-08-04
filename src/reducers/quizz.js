@@ -17,11 +17,10 @@ const initialState = {
   data: [],
 };
 
-const getListQuizzByPage = (datas, page = 1, numberPerPage = 8) => {
-  let npp = numberPerPage;
-  if (npp < 4) npp = 4;
-  const startIndex = (page - 1) * npp;
-  let endIndex = startIndex + npp;
+const getListQuizzByPage = (datas, startIndex, cardNeedScroll) => {
+  let cns = cardNeedScroll;
+  if (cns < 4) cns = 4;
+  let endIndex = startIndex + cns;
   if (endIndex > datas.length) endIndex = datas.length;
   return datas.slice(startIndex, endIndex);
 };
@@ -35,9 +34,9 @@ const quizzReducer = (state = initialState, action) => {
         loading: true,
       };
     case GET_LIST_QUIZZ_SUCCESS: {
-      const { payload, numberPerPage } = action;
+      const { payload, cardNeedScroll } = action;
       const quizzsArr = Object.values(payload).reverse(); // Arrange new first
-      const quizzs = getListQuizzByPage(quizzsArr, 1, numberPerPage * 2);
+      const quizzs = getListQuizzByPage(quizzsArr, 0, cardNeedScroll);
       return {
         ...state,
         loading: false,
@@ -56,10 +55,10 @@ const quizzReducer = (state = initialState, action) => {
         err: action.err,
       };
     case GET_LIST_QUIZZ_SCROLL_SUCCESS: {
-      const { numberPerPage } = action;
+      const { startIndex, cardNeedScroll } = action;
       const quizzsArr = Object.values(state.allData).reverse(); // Arrange new first
       const newPage = state.page + 1;
-      const quizzs = getListQuizzByPage(quizzsArr, newPage, numberPerPage * 2);
+      const quizzs = getListQuizzByPage(quizzsArr, startIndex, cardNeedScroll);
       return {
         ...state,
         loading: false,

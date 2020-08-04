@@ -1,24 +1,20 @@
 import { createSelector } from 'reselect';
 
-const getAllOptions = (state) => state.optionsReducer;
-const getOptions = createSelector(getAllOptions, (op) => op);
+const optionsSelector = (state) => state.optionsReducer;
+const spaceSelector = (state) => state.optionsReducer.space;
+const viewSelector = (state) => state.optionsReducer.view;
 
-const getSpace = createSelector(
-  (state) => state.optionsReducer.space,
-  (space) => space
+export const getOptions = createSelector([optionsSelector], (op) => op);
+export const getPreferences = createSelector(
+  [getOptions],
+  (op) => op.preferences
 );
-
-const getSpaceAndView = createSelector(
-  (state) => state.optionsReducer,
-  (options) => ({
-    space: options.space,
-    view: options.view,
+export const getSpace = createSelector([spaceSelector], (space) => space);
+export const getView = createSelector([viewSelector], (view) => view);
+export const getSpaceAndView = createSelector(
+  [spaceSelector, viewSelector],
+  (space, view) => ({
+    space,
+    view,
   })
 );
-
-const getPreferences = createSelector(
-  (state) => state.optionsReducer,
-  (options) => ({ ...options.preferences })
-);
-
-export { getOptions, getSpaceAndView, getPreferences, getSpace };

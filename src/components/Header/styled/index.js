@@ -14,7 +14,7 @@ const header = makeStyles((theme) => {
       display: 'flex',
       height: '100%',
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-between',
     },
   };
 });

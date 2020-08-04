@@ -20,11 +20,12 @@ function* getListQuizz() {
         const {
           optionsReducer: { view, space },
         } = yield select();
-        const numberPerPage = getCardNumber(window.innerWidth, view, space);
+        const cardNeedScroll =
+          getCardNumber(window.innerWidth, view, space) * 2;
         yield put({
           type: GET_LIST_QUIZZ_SUCCESS,
           payload: res.data.quizzs,
-          numberPerPage,
+          cardNeedScroll,
         });
       } else {
         yield put({ type: GET_LIST_QUIZZ_FAIL, err: 'No Data!' });

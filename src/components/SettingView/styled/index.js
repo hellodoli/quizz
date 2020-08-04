@@ -1,22 +1,53 @@
 import { makeStyles } from '@material-ui/core';
 
 const settingView = makeStyles((theme) => {
-  const { pxToRem } = theme.typography;
   return {
     root: {
+      position: 'relative',
       display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'stretch',
+      flexDirection: 'column',
       overflow: 'hidden',
-      padding: `${pxToRem(24)} ${pxToRem(16)}`,
+      padding: 16,
       background: theme.palette.background.secondary,
       zIndex: theme.zIndex.appBar,
-      '& > *': {
+      '& > .separator': {
+        display: 'none',
+        height: 'auto',
         margin: '0 2rem',
       },
-      '& > .separator': {
-        height: 'auto',
-        margin: '0 1.5rem',
+      // Tablet
+      [theme.breakpoints.up('sm')]: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        padding: 24,
+      },
+      // Desktop
+      [theme.breakpoints.up('md')]: {
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        '& > .separator': {
+          display: 'block',
+        },
+      },
+      // Spacing
+      '& > $item': {
+        marginTop: '1.5rem',
+        [theme.breakpoints.only('sm')]: {
+          flex: '0 0 50%',
+          maxWidth: '50%',
+          '&:nth-of-type(-n + 2)': {
+            marginTop: 0,
+          },
+        },
+        [theme.breakpoints.up('md')]: {
+          margin: '0 2rem',
+        },
+      },
+      '& > $item:first-of-type': {
+        marginTop: 0,
+        [theme.breakpoints.up('sm')]: {
+          display: 'block',
+        },
       },
     },
     item: {
@@ -40,9 +71,15 @@ const settingView = makeStyles((theme) => {
       '& > :not(:last-child)': {
         marginBottom: '.75rem',
       },
+      // Radio or checkbox label
       '& .MuiTypography-body1': {
         fontSize: '.75rem',
         fontWeight: 700,
+        letterSpacing: '1.6px',
+        transition: 'color .1s',
+      },
+      '& .quizz-active-option .MuiTypography-body1': {
+        color: theme.palette.action.active,
       },
     },
   };
@@ -75,13 +112,15 @@ const layoutPreview = makeStyles((theme) => {
   return {
     layoutPreviewCSSVar: (props) => getCSSVar(props),
     layoutPreview: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignSelf: 'flex-start',
       width: 'var(--layout-width)',
       padding: 'var(--layout-gap)',
       background: bg.default,
       borderRadius: '8px',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignSelf: 'flex-start',
+      },
     },
     layoutPreviewTop: {
       display: 'flex',
@@ -112,12 +151,18 @@ const layoutPreview = makeStyles((theme) => {
   };
 });
 
-const formControlLabel = makeStyles(() => ({
+const formControlLabel = makeStyles((theme) => ({
   root: {
     marginLeft: '-7px',
+    marginRight: 0,
+    '&:hover': {
+      '& .MuiTypography-body1': {
+        color: theme.palette.action.active,
+      },
+    },
     '& .MuiRadio-root': {
       padding: '5px',
-      marginRight: '5px',
+      marginRight: '.5rem',
     },
   },
 }));

@@ -1,8 +1,9 @@
 import React from 'react';
+import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 
-import { getOptions } from '../../selector/options';
+import { getPreferences } from '../../selector/options';
 import { changeTypePreferences } from '../../actions/options';
 import { preChangeDLTheme } from '../../actions/theme';
 
@@ -12,15 +13,15 @@ import SwitchView from '../Switch';
 
 const PreferenceItem = ({ id, value, name, handleChangePre }) => {
   const classes = preferencesLayoutClass();
+  const activeOption = clsx(classes.root, { 'quizz-active-option': value });
   return (
-    <div className={classes.root}>
+    <div className={activeOption}>
       <div className={classes.switch}>
         <SwitchView
           width={35}
           height={16}
-          leftIcon={false}
-          rightIcon={false}
           isActive={value}
+          circleBar
           onClick={() => handleChangePre(id, value)}
         />
       </div>
@@ -31,11 +32,7 @@ const PreferenceItem = ({ id, value, name, handleChangePre }) => {
 
 const PreferencesLayout = (props) => {
   console.log('PreferencesLayout re-render');
-  const {
-    options: { preferences },
-    changeTypePreferences,
-    preChangeDLTheme,
-  } = props;
+  const { preferences, changeTypePreferences, preChangeDLTheme } = props;
   const preferencesArr = Object.values(preferences);
 
   const handleChangePre = (id, value) => {
@@ -61,8 +58,9 @@ const PreferencesLayout = (props) => {
   );
 };
 
+// can change using hooks
 const mapStateToProps = (state) => ({
-  options: getOptions(state),
+  preferences: getPreferences(state),
 });
 
 const mapDispatchToProps = {

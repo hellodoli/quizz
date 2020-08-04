@@ -1,7 +1,8 @@
 import React from 'react';
+import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
-import { getSpace, getOptions } from '../../selector/options';
+import { getSpace } from '../../selector/options';
 import { changeTypeSpaceView } from '../../actions/options';
 import { formControlLabel as formControlLabelClass } from './styled';
 
@@ -9,12 +10,14 @@ function SpaceLayout() {
   console.log('SpaceLayout re-render');
   const classes = formControlLabelClass();
   const dispatch = useDispatch();
-  const { space } = useSelector(getOptions);
+  const space = useSelector(getSpace);
 
   const FormControlLabelCustom = ({ value, label }) => {
+    const activeOption = clsx(space === value && 'quizz-active-option');
     return (
       <FormControlLabel
         classes={classes}
+        className={activeOption}
         label={label}
         value={value}
         control={<Radio color="primary" size="small" />}
@@ -39,4 +42,4 @@ function SpaceLayout() {
   );
 }
 
-export default React.memo(SpaceLayout);
+export default SpaceLayout;

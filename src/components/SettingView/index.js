@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMediaQuery } from '@material-ui/core';
 import { settingView as settingViewClass } from './styled';
 // Components
 import SwitchLayoutReView from './SwitchLayoutReView';
@@ -9,11 +10,18 @@ import PreferencesLayout from './PreferencesLayout';
 function SettingView() {
   console.log('SettingView - rerender');
   const classes = settingViewClass();
+  const isSM = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const isMD = useMediaQuery((theme) => theme.breakpoints.up('md'));
   return (
     <div className={classes.root}>
-      <LayoutReview />
-      <div className="separator" />
       {/* Layout */}
+      {isSM && (
+        <div className={classes.item}>
+          <LayoutReview />
+        </div>
+      )}
+      {isMD && <span className="separator" />}
+      {/* Switch Layout */}
       <div className={classes.item}>
         <div className={classes.itemTitle}>LAYOUT</div>
         <div className={classes.itemBody}>

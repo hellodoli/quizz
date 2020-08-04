@@ -23,6 +23,12 @@ const switchViewClass = makeStyles((theme) => {
     if (circleBar && bRadius < 7) bRadius = 7;
     return bRadius;
   };
+  const getBgSlider = ({ isActive, isHasIcon }) => {
+    if (isHasIcon) return theme.palette.action.disabledBackground;
+    return isActive
+      ? theme.palette.primary.dark
+      : theme.palette.action.disabledBackground;
+  };
   // Icon
   const getWidthIcon = ({ width }) => parseInt(width / 3, 10);
   return {
@@ -44,10 +50,10 @@ const switchViewClass = makeStyles((theme) => {
     slider: {
       right: 0,
       bottom: 0,
-      width: '98%',
-      height: '87.5%',
+      width: '95%',
+      height: '80%',
       margin: 'auto',
-      background: theme.palette.background.default,
+      background: (props) => getBgSlider(props),
       borderRadius: (props) => getBorderRadiusSlider(props),
       zIndex: -2,
     },

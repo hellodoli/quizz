@@ -3,18 +3,27 @@ import {
   GET_LIST_QUIZZ_SCROLL_SUCCESS,
   GET_LIST_QUIZZ_FAIL,
 } from '../../../constants/quizz';
-import { getCardNumber } from '../../../utils/quizzs';
+import { getCardNumberToScroll } from '../../../utils/quizzs';
 
 function* getListQuizzScroll() {
   try {
     yield delay(500);
     const {
+      quizzReducer,
       optionsReducer: { view, space },
     } = yield select();
-    const numberPerPage = getCardNumber(window.innerWidth, view, space);
+
+    const { length } = quizzReducer.data;
+    const cardNeedScroll = getCardNumberToScroll(
+      window.innerWidth,
+      view,
+      space,
+      length
+    );
     yield put({
       type: GET_LIST_QUIZZ_SCROLL_SUCCESS,
-      numberPerPage,
+      startIndex: length,
+      cardNeedScroll,
     });
   } catch (error) {
     yield put({ type: GET_LIST_QUIZZ_FAIL, err: error });

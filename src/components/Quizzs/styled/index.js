@@ -5,14 +5,8 @@ export const quizzGeneral = makeStyles((theme) => {
     main: {
       position: 'relative',
       width: '100%',
-      // general Style
-      '& .quizz-board-item': {
-        '& .quizz-board-item-link img': {
-          transition: 'transform .4s ease-out, opacity 0.1s ease-in-out',
-        },
-      },
     },
-    // All other style in $wrapperMain
+    // All other style in $main
     inner: {
       padding: `${theme.typography.pxToRem(80)} 0`,
     },
@@ -101,6 +95,12 @@ export const quizzBoardItemRow = makeStyles((theme) => {
     reveal: {
       transition: 'transform .2s ease-out',
     },
+    // Subtitle
+    subTitleWrapp: {
+      fontStyle: 'italic',
+      color: theme.palette.text.secondary,
+    },
+    // Bookmark
     loveWrapp: {
       position: 'absolute',
       top: 0,
@@ -118,10 +118,6 @@ export const quizzBoardItemRow = makeStyles((theme) => {
     iconWrapp: {
       display: 'inline-flex',
       margin: '.5rem',
-    },
-    subTitleWrapp: {
-      fontStyle: 'italic',
-      color: theme.palette.text.secondary,
     },
     currentItem: {
       '& + $currentItem': {

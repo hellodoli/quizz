@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 
 const lazyImageClass = makeStyles(() => ({
   wrapp: {
@@ -8,19 +10,24 @@ const lazyImageClass = makeStyles(() => ({
     width: '100%',
     paddingTop: ({ ratio }) => (ratio === '1x1' ? '100%' : '56.25%'),
   },
-  img: {
-    display: 'block',
+  positionImg: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  skeletonLoading: {
+    opacity: 1,
+  },
+  img: {
+    display: 'block',
     width: '100%',
-    transition: 'opacity 0.1s ease-in-out',
+    transition: 'transform .4s ease-out, opacity 0.1s ease-in-out',
+    objectFit: 'cover',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    objectFit: 'cover',
     opacity: ({ loaded }) => (loaded ? '1' : '0'),
   },
 }));
@@ -35,10 +42,21 @@ const elementInViewport = (el) => {
 };
 
 function LazyImage(props) {
-  const { image: src, ratio, width, height, placeholder, alt, title } = props;
+  console.log('reload LazyImage');
+  const {
+    image: src,
+    ratio,
+    width,
+    height,
+    placeholder,
+    alt,
+    title,
+    ...other // className or something else
+  } = props;
 
   const [loaded, setLoaded] = useState(false);
   const classes = lazyImageClass({ loaded, ratio });
+  const imgClasses = clsx(classes.positionImg, classes.img, { loaded });
   const ref = useRef();
 
   const handleScroll = useCallback(() => {
@@ -62,19 +80,29 @@ function LazyImage(props) {
   useEffect(() => {
     handleScroll();
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll]);
+  }, [alt, handleScroll, height, loaded, src, title, width]);
+
   return (
     <div className={classes.wrapp}>
+      {!loaded && (
+        <Skeleton
+          className={clsx(classes.positionImg, classes.skeletonLoading)}
+          variant="rect"
+          animation="wave"
+          width="100%"
+          height="100%"
+        />
+      )}
       <img
         ref={ref}
         src={placeholder}
+        className={imgClasses}
         alt=""
         title=""
-        className={classes.img}
+        {...other}
       />
     </div>
   );

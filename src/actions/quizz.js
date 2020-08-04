@@ -10,10 +10,10 @@ export const getListQuizz = () => ({
   type: GET_LIST_QUIZZ,
 });
 
-export const getListQuizzSuccess = (payload, numberPerPage) => ({
+export const getListQuizzSuccess = (payload, cardNeedScroll) => ({
   type: GET_LIST_QUIZZ_SUCCESS,
   payload,
-  numberPerPage,
+  cardNeedScroll,
 });
 
 // For scrolling paging
@@ -21,9 +21,10 @@ export const getListQuizzScroll = () => ({
   type: GET_LIST_QUIZZ_SCROLL,
 });
 
-export const getListQuizzScrollSuccess = (numberPerPage) => ({
+export const getListQuizzScrollSuccess = (cardNeedScroll, startIndex) => ({
   type: GET_LIST_QUIZZ_SCROLL_SUCCESS,
-  numberPerPage,
+  cardNeedScroll,
+  startIndex,
 });
 
 export const getListQuizzFail = () => ({

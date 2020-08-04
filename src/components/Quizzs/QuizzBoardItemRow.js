@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Card, CardContent, Typography, IconButton } from '@material-ui/core';
-import { Favorite as FavoriteIcon } from '@material-ui/icons';
+import { Bookmark as BookmarkIcon } from '@material-ui/icons';
 import { quizzBoardItemRow } from './styled';
 // Components
 import SourceLink from './SourceLink';
@@ -32,22 +32,22 @@ function QuizzBoardItemRow({ quizz }) {
           <Typography variant="subtitle2">{publicTime}</Typography>
         </div>
 
+        {/* Link to Source */}
         {source ? (
           <div className={clsx(classes.reveal, classes.currentItem)}>
             <SourceLink rootSource={rootSource} source={source} size="small" />
           </div>
         ) : null}
       </CardContent>
-
-      {/* Like Icon Group */}
+      {/* Bookmark */}
       <div className={clsx(classes.loveWrapp, classes.reveal)}>
         <IconButton
-          color="default"
+          color="secondary"
           size="small"
           className={classes.iconWrapp}
           title="Add Favorite"
         >
-          <FavoriteIcon fontSize="small" />
+          <BookmarkIcon fontSize="small" />
         </IconButton>
       </div>
     </Card>

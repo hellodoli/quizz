@@ -13,8 +13,10 @@ import { quizzBoardItemCard, quizzBoardItemActions } from './styled';
 // Components
 import SourceLink from './SourceLink';
 import LazyImage from './LazyImage';
+import Bookmark from './Bookmark';
 
 function QuizzBoardItemCard({ quizz }) {
+  console.log('reload QuizzBoardItemCard');
   const classes = quizzBoardItemCard();
   const aClass = quizzBoardItemActions();
   const {
@@ -51,6 +53,19 @@ function QuizzBoardItemCard({ quizz }) {
         <div className={aClass.containWrapp}>
           <SourceLink rootSource={rootSource} source={source} />
           <Typography variant="subtitle2">{publicTime}</Typography>
+        </div>
+        <div className={aClass.containWrapp}>
+          <Bookmark
+            active={false}
+            iconButtonProps={{
+              size: 'small',
+              disableFocusRipple: true,
+              disableRipple: true,
+            }}
+            iconProps={{ fontSize: 'small' }}
+            onClick={() => console.log('clicked')}
+            squareFocus
+          />
         </div>
       </CardActions>
     </Card>

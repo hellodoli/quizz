@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 
-export const getTheme = createSelector(
-  (state) => state.themeReducer,
-  (theme) => theme
+const themeSelector = (state) => state.themeReducer;
+
+export const getTheme = createSelector([themeSelector], (theme) => theme);
+export const getDLTheme = createSelector(
+  [themeSelector],
+  (theme) => theme.palette.type
 );
