@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Grid, useMediaQuery } from '@material-ui/core';
 // Components
-import QuizzBoardItemCard from './QuizzBoardItemCard';
-import QuizzBoardItemRow from './QuizzBoardItemRow';
+import ItemCard from './QuizzBoardItemCard';
+import ItemRow from './QuizzBoardItemRow';
 
 /*
   - Eco (default): lg(1280) 4 - 12 || md(960) 3 || sm (600) 2
@@ -31,25 +32,32 @@ const getGridSpace = (space) => {
   return gridSpace;
 };
 
-function QuizzBoardItem(props) {
-  const {
-    isHasCardGrid = true,
-    quizz,
-    options: { view, space },
-  } = props;
-
+function QuizzBoardItem({ isHasCardGrid, quizz, options: { view, space } }) {
   const gridSpace = getGridSpace(space);
   const { xs, sm, md, lg } = gridSpace;
 
   if (view === 'card' && isHasCardGrid) {
     return (
       <Grid item xs={xs} sm={sm} md={md} lg={lg}>
-        <QuizzBoardItemCard quizz={quizz} />
+        <ItemCard {...quizz} />
       </Grid>
     );
   }
-  if (view === 'row') return <QuizzBoardItemRow quizz={quizz} />;
-  return <QuizzBoardItemCard quizz={quizz} />;
+  if (view === 'row') return <ItemRow {...quizz} />;
+  return <ItemCard {...quizz} />;
 }
+
+QuizzBoardItem.defaultProps = {
+  isHasCardGrid: true,
+};
+
+QuizzBoardItem.propTypes = {
+  isHasCardGrid: PropTypes.bool,
+  quizz: PropTypes.shape({}).isRequired,
+  options: PropTypes.shape({
+    view: PropTypes.string.isRequired,
+    space: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default QuizzBoardItem;

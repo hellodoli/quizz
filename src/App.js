@@ -4,8 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 // Themes
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import GlobalCss from './theme/GlobalCss';
-import { getTheme, getDLTheme } from './selector/theme';
-
+import { getTheme } from './selector/theme';
 // Containers
 import Home from './containers/Home';
 import Quizzs from './containers/Quizzs';
@@ -23,8 +22,6 @@ function Page404() {
 
 function App() {
   const theme = useSelector(getTheme);
-  const dlTheme = useSelector(getDLTheme);
-  console.log('dlTheme: ', dlTheme);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">

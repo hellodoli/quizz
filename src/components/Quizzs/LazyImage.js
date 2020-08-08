@@ -42,7 +42,6 @@ const elementInViewport = (el) => {
 };
 
 function LazyImage(props) {
-  console.log('reload LazyImage');
   const {
     image: src,
     ratio,

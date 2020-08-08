@@ -1,20 +1,20 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Card, CardContent, Typography, IconButton } from '@material-ui/core';
-import { Bookmark as BookmarkIcon } from '@material-ui/icons';
+import { Card, CardContent, Typography } from '@material-ui/core';
 import { quizzBoardItemRow } from './styled';
 // Components
 import SourceLink from './SourceLink';
+import Bookmark from './Bookmark';
 
-function QuizzBoardItemRow({ quizz }) {
-  const {
-    title,
-    public_time: publicTime,
-    root_source: rootSource,
-    source,
-  } = quizz;
+function QuizzBoardItemRow({
+  id,
+  title,
+  public_time: publicTime,
+  root_source: rootSource,
+  source,
+  bookmark,
+}) {
   const classes = quizzBoardItemRow();
-
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -35,34 +35,44 @@ function QuizzBoardItemRow({ quizz }) {
         {/* Link to Source */}
         {source ? (
           <div className={clsx(classes.reveal, classes.currentItem)}>
-            <SourceLink rootSource={rootSource} source={source} size="small" />
+            <SourceLink
+              rootSource={rootSource}
+              source={source}
+              iconButtonProps={{ size: 'small' }}
+            />
           </div>
         ) : null}
       </CardContent>
       {/* Bookmark */}
       <div className={clsx(classes.loveWrapp, classes.reveal)}>
-        <IconButton
-          color="secondary"
-          size="small"
+        <Bookmark
+          id={id}
+          active={bookmark}
+          squareFocus
+          isTooltip={false}
           className={classes.iconWrapp}
-          title="Add Favorite"
-        >
-          <BookmarkIcon fontSize="small" />
-        </IconButton>
+          iconProps={{
+            fontSize: 'small',
+          }}
+          iconButtonProps={{
+            size: 'small',
+            disableFocusRipple: true,
+            disableRipple: true,
+          }}
+        />
       </div>
     </Card>
   );
 }
 
 function areEqual(prevProps, nextProps) {
-  const prevQuizz = prevProps.quizz;
-  const nextQuizz = nextProps.quizz;
-  const prevImg = prevQuizz.questions[0].img.url;
-  const nextImg = nextQuizz.questions[0].img.url;
+  const prevImg = prevProps.questions[0].img.url;
+  const nextImg = prevProps.questions[0].img.url;
   if (
-    prevImg !== nextImg &&
-    prevQuizz.title !== nextQuizz.title &&
-    prevQuizz.author !== nextQuizz.author
+    prevImg !== nextImg ||
+    prevProps.title !== nextProps.title ||
+    prevProps.author !== nextProps.author ||
+    prevProps.bookmark !== nextProps.bookmark
   )
     return false;
   return true;

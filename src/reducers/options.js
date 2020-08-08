@@ -62,7 +62,7 @@ const getOptions = () => {
   return curView;
 };
 
-const layoutViewReducer = (state = getOptions(), action) => {
+const optionsReducer = (state = getOptions(), action) => {
   switch (action.type) {
     case TOGGLE_TYPE_LAYOUT_VIEW: {
       const view = state.view === 'card' ? 'row' : 'card';
@@ -106,4 +106,4 @@ const layoutViewReducer = (state = getOptions(), action) => {
   }
 };
 
-export default layoutViewReducer;
+export default optionsReducer;

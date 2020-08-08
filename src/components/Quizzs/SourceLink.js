@@ -18,8 +18,14 @@ const getSourceName = (rootS, ss) => {
   return OUT_SOURCE.unknow;
 };
 
-function SourceLink(props) {
-  const { source, rootSource, color, size, fontSize, ...other } = props;
+function SourceLink({
+  source,
+  rootSource,
+  // for IconButton
+  iconButtonProps,
+  iconProps,
+  ...other
+}) {
   const sourceName = getSourceName(rootSource, source);
   const LinkWrapper = ({ children }) => {
     if (sourceName === OUT_SOURCE.unknow) return <>{children}</>;
@@ -34,6 +40,7 @@ function SourceLink(props) {
       </Link>
     );
   };
+
   return (
     <LinkWrapper>
       <Tooltip
@@ -43,8 +50,8 @@ function SourceLink(props) {
         leaveDelay={200}
         arrow
       >
-        <IconButton color={color} size={size} {...other}>
-          <AccountCircleIcon fontSize={fontSize} />
+        <IconButton {...iconButtonProps}>
+          <AccountCircleIcon {...iconProps} {...other} />
         </IconButton>
       </Tooltip>
     </LinkWrapper>
@@ -54,17 +61,15 @@ function SourceLink(props) {
 SourceLink.defaultProps = {
   source: OUT_SOURCE.unknow,
   rootSource: OUT_SOURCE.unknow,
-  color: 'default', // 'default'| 'inherit'| 'primary'| 'secondary'
-  size: 'medium', // 'small' | 'medium'
-  fontSize: 'default', // 'default'| 'inherit' | 'large' | 'small'
+  iconButtonProps: {},
+  iconProps: {},
 };
 
 SourceLink.propTypes = {
   source: PropTypes.string,
   rootSource: PropTypes.string,
-  color: PropTypes.string,
-  size: PropTypes.string,
-  fontSize: PropTypes.string,
+  iconButtonProps: PropTypes.shape({}),
+  iconProps: PropTypes.shape({}),
 };
 
 export default SourceLink;

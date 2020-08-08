@@ -12,21 +12,22 @@ import {
 import { quizzBoardItemCard, quizzBoardItemActions } from './styled';
 // Components
 import SourceLink from './SourceLink';
-import LazyImage from './LazyImage';
 import Bookmark from './Bookmark';
+import LazyImage from './LazyImage';
 
-function QuizzBoardItemCard({ quizz }) {
+function QuizzBoardItemCard({
+  id,
+  title,
+  questions,
+  public_time: publicTime,
+  root_source: rootSource,
+  source,
+  bookmark,
+}) {
   console.log('reload QuizzBoardItemCard');
   const classes = quizzBoardItemCard();
   const aClass = quizzBoardItemActions();
-  const {
-    id,
-    title,
-    questions,
-    public_time: publicTime,
-    root_source: rootSource,
-    source,
-  } = quizz;
+
   const toDetailUrl = `/quizzs/${id}`;
   return (
     <Card classes={classes} className="quizz-board-item">
@@ -56,15 +57,16 @@ function QuizzBoardItemCard({ quizz }) {
         </div>
         <div className={aClass.containWrapp}>
           <Bookmark
-            active={false}
+            id={id}
+            active={bookmark}
+            squareFocus
+            iconProps={{ fontSize: 'small' }}
             iconButtonProps={{
               size: 'small',
               disableFocusRipple: true,
               disableRipple: true,
+              className: 'quizz-board-item-bookmark',
             }}
-            iconProps={{ fontSize: 'small' }}
-            onClick={() => console.log('clicked')}
-            squareFocus
           />
         </div>
       </CardActions>
@@ -73,14 +75,13 @@ function QuizzBoardItemCard({ quizz }) {
 }
 
 function areEqual(prevProps, nextProps) {
-  const prevQuizz = prevProps.quizz;
-  const nextQuizz = nextProps.quizz;
-  const prevImg = prevQuizz.questions[0].img.url;
-  const nextImg = nextQuizz.questions[0].img.url;
+  const prevImg = prevProps.questions[0].img.url;
+  const nextImg = prevProps.questions[0].img.url;
   if (
-    prevImg !== nextImg &&
-    prevQuizz.title !== nextQuizz.title &&
-    prevQuizz.author !== nextQuizz.author
+    prevImg !== nextImg ||
+    prevProps.title !== nextProps.title ||
+    prevProps.author !== nextProps.author ||
+    prevProps.bookmark !== nextProps.bookmark
   )
     return false;
   return true;

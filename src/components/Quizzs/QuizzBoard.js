@@ -2,14 +2,16 @@ import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Container } from '@material-ui/core';
-
+import { getMixBookmarkWithQuizz } from '../../utils/bookmark';
 import { getListQuizz, getListQuizzScroll } from '../../actions/quizz';
+// Selectors
 import {
   getAllQuizz,
   getAllQuizzRoot,
   getLoadingQuizz,
 } from '../../selector/quizz';
 import { getOptions } from '../../selector/options';
+import { getBookmark } from '../../selector/bookmark';
 // Styles
 import { quizzGeneral } from './styled';
 // Components
@@ -43,8 +45,12 @@ function QuizzBoard() {
   const dispatch = useDispatch();
   const rootQuizzs = useSelector(getAllQuizzRoot);
   const quizzs = useSelector(getAllQuizz);
+  const bm = useSelector(getBookmark);
+
   const loading = useSelector(getLoadingQuizz);
   const options = useSelector(getOptions);
+  const quizzWithBookmark = getMixBookmarkWithQuizz(quizzs, bm);
+
   const {
     space,
     preferences: { cardAnimation },
@@ -76,14 +82,14 @@ function QuizzBoard() {
 
   const renderQuizzBoardList = () => {
     const isHasCardAnimation = cardAnimation.value;
-    if (quizzs && quizzs.length > 0) {
+    if (quizzWithBookmark && quizzWithBookmark.length > 0) {
       return (
         <div
           className={clsx('quizz-board', {
             [classes.hasCardAnimation]: isHasCardAnimation,
           })}
         >
-          <QuizzBoardList quizzs={quizzs} options={options} />
+          <QuizzBoardList quizzs={quizzWithBookmark} options={options} />
           {loading && <CircleLoading />}
         </div>
       );
@@ -91,7 +97,7 @@ function QuizzBoard() {
     return null;
   };
 
-  if (!rootQuizzs || rootQuizzs.length === 0)
+  if (!quizzWithBookmark || quizzWithBookmark.length === 0)
     return <ModalLoading color="primary" />;
   return (
     <div className={classes.main}>
@@ -102,4 +108,4 @@ function QuizzBoard() {
   );
 }
 
-export default React.memo(QuizzBoard);
+export default QuizzBoard;
