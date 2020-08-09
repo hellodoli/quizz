@@ -39,23 +39,25 @@ const SwitchLayoutReView = () => {
   };
 
   return (
-    <Tooltip
-      title={titleTooltip}
-      placement="top"
-      enterDelay={500}
-      leaveDelay={200}
-      arrow
-    >
-      <div>
-        <SwitchView
-          width={64}
-          leftIcon={() => IconCard}
-          rightIcon={() => IconRow}
-          isActive={!!(view === 'row')}
-          onClick={switchViewLayout}
-        />
-      </div>
-    </Tooltip>
+    <div>
+      <Tooltip
+        title={titleTooltip}
+        placement="top"
+        enterDelay={500}
+        leaveDelay={200}
+        arrow
+      >
+        <div className="d-inline-flex">
+          <SwitchView
+            width={64}
+            leftIcon={() => IconCard}
+            rightIcon={() => IconRow}
+            isActive={!!(view === 'row')}
+            onClick={switchViewLayout}
+          />
+        </div>
+      </Tooltip>
+    </div>
   );
 };
 

@@ -1,10 +1,9 @@
 import { createSelector } from 'reselect';
 
-const getAllRoot = (state) => Object.values(state.quizzReducer.allData);
+const rootQuizzSelector = (state) => Object.values(state.quizzReducer.allData);
+const quizzsSelector = (state) => Object.values(state.quizzReducer.data);
 
-const getAll = (state) => Object.values(state.quizzReducer.data);
-
-const getLoading = (state) => state.quizzReducer.loading;
+const loadingSelector = (state) => state.quizzReducer.loading;
 
 const getQuizzNewOrOld = (quizzs, num, type) => {
   const maxLength = quizzs.length;
@@ -18,16 +17,23 @@ const getQuizzNewOrOld = (quizzs, num, type) => {
 };
 
 export const getOldestQuizz = (num) =>
-  createSelector(getAll, (allQuizz) => getQuizzNewOrOld(allQuizz, num, 'old'));
+  createSelector([quizzsSelector], (allQuizz) =>
+    getQuizzNewOrOld(allQuizz, num, 'old')
+  );
 
 export const getNewestQuizz = (num) =>
-  createSelector(getAll, (allQuizz) => getQuizzNewOrOld(allQuizz, num, 'new'));
+  createSelector([quizzsSelector], (allQuizz) =>
+    getQuizzNewOrOld(allQuizz, num, 'new')
+  );
 
-export const getAllQuizz = createSelector(getAll, (allQuizz) => allQuizz);
+export const getQuizzs = createSelector([quizzsSelector], (quizzs) => quizzs);
 
-export const getAllQuizzRoot = createSelector(
-  getAllRoot,
-  (allQuizzRoot) => allQuizzRoot
+export const getRootQuizz = createSelector(
+  [rootQuizzSelector],
+  (rootQuizz) => rootQuizz
 );
 
-export const getLoadingQuizz = createSelector(getLoading, (loading) => loading);
+export const getLoadingQuizz = createSelector(
+  loadingSelector,
+  (loading) => loading
+);

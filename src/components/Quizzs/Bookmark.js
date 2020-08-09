@@ -39,6 +39,7 @@ const Bookmark = ({
       classes={classes}
       color={active ? 'primary' : 'default'}
       onClick={toggle}
+      {...iconButtonProps}
       {...other}
     >
       <BookmarkIcon {...iconProps} />

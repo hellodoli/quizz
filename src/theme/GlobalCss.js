@@ -49,6 +49,10 @@ export default withStyles((theme) => {
       '.text-mute': {
         opacity: '.5!important',
       },
+      // Display
+      '.d-inline-flex': {
+        display: 'inline-flex',
+      },
       // Other
       '.divider-line': {
         borderBottom: `1px solid ${palette.divider}!important`,

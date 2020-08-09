@@ -30,13 +30,6 @@ function QuizzBoardContain() {
   }, [dispath]);
 
   if (!quizzs || quizzs.length === 0) return <ModalLoading />;
-
-  /*
-    - Eco (default): lg(1280) 4 || md(960) 3 || sm (600) 2
-    - Cozy: lg(1280) 3 - 24 || sm(600) 2
-    - Roomy: lg(1280) 3 - 12 || sm(600) 2
-  */
-
   return (
     <div className={clsx(classes.wrapperMain, classes.wrapperMainVar)}>
       <Container maxWidth={maxWithContainer}>

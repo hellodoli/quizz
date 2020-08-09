@@ -58,6 +58,9 @@ const switchViewClass = makeStyles((theme) => {
       zIndex: -2,
     },
     holder: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       width: '50%',
       height: '100%',
       willChange: 'transform',

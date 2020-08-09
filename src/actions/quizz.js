@@ -4,6 +4,7 @@ import {
   GET_LIST_QUIZZ_FAIL,
   GET_LIST_QUIZZ_SCROLL,
   GET_LIST_QUIZZ_SCROLL_SUCCESS,
+  SET_LIST_QUIZZ_BOOKMARK,
 } from '../constants/quizz';
 
 export const getListQuizz = () => ({
@@ -29,4 +30,16 @@ export const getListQuizzScrollSuccess = (cardNeedScroll, startIndex) => ({
 
 export const getListQuizzFail = () => ({
   type: GET_LIST_QUIZZ_FAIL,
+});
+
+/**
+ * Give id of QuizzCardItem for search and edit
+ * both rootQuizzs and quizzs
+ * @param {Number} id
+ * @param {Book} value
+ */
+export const setListQuizzBookmark = (id, value) => ({
+  type: SET_LIST_QUIZZ_BOOKMARK,
+  id,
+  value,
 });

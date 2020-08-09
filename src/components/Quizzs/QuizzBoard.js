@@ -1,15 +1,10 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Grid, Container } from '@material-ui/core';
-import { getMixBookmarkWithQuizz } from '../../utils/bookmark';
 import { getListQuizz, getListQuizzScroll } from '../../actions/quizz';
 // Selectors
-import {
-  getAllQuizz,
-  getAllQuizzRoot,
-  getLoadingQuizz,
-} from '../../selector/quizz';
+import { getQuizzs, getRootQuizz, getLoadingQuizz } from '../../selector/quizz';
 import { getOptions } from '../../selector/options';
 import { getBookmark } from '../../selector/bookmark';
 // Styles
@@ -40,65 +35,68 @@ function QuizzBoardList({ options, quizzs }) {
   );
 }
 
-function QuizzBoard() {
+function QuizzBoard({
+  rootQuizzs,
+  quizzs,
+  loading,
+  options,
+  // actions
+  getListQuizz,
+  getListQuizzScroll,
+}) {
   console.log('re-render QuizzBoard');
-  const dispatch = useDispatch();
-  const rootQuizzs = useSelector(getAllQuizzRoot);
-  const quizzs = useSelector(getAllQuizz);
-  const bm = useSelector(getBookmark);
-
-  const loading = useSelector(getLoadingQuizz);
-  const options = useSelector(getOptions);
-  const quizzWithBookmark = getMixBookmarkWithQuizz(quizzs, bm);
-
   const {
     space,
-    preferences: { cardAnimation },
+    preferences: { cardAnimation, bookmark },
   } = options;
+
+  const bookmarkView = !!bookmark.value;
+  const isHasCardAnimation = !!cardAnimation.value;
+
+  const filterQuizz = bookmarkView
+    ? rootQuizzs.filter((quizz) => quizz.bookmark === true)
+    : quizzs;
 
   const classes = quizzGeneral();
   const maxWithContainer = space && space === 'eco' ? false : 'lg';
 
   useEffect(() => {
-    dispatch(getListQuizz());
-  }, [dispatch]);
+    getListQuizz();
+  }, [getListQuizz]);
 
   useEffect(() => {
     const getMoreQuizzs = () => {
-      // scrollTop + clientHeight >= scrollHeight
-      const scrollTop = window.pageYOffset;
-      const clientHeight = window.innerHeight;
-      if (
-        scrollTop + clientHeight >=
-          document.documentElement.scrollHeight - 50 &&
-        quizzs.length < rootQuizzs.length
-      ) {
-        dispatch(getListQuizzScroll());
+      if (!bookmarkView) {
+        // scrollTop + clientHeight >= scrollHeight
+        const scrollTop = window.pageYOffset;
+        const clientHeight = window.innerHeight;
+        if (
+          scrollTop + clientHeight >=
+            document.documentElement.scrollHeight - 50 &&
+          quizzs.length < rootQuizzs.length
+        ) {
+          getListQuizzScroll();
+        }
       }
     };
     window.addEventListener('scroll', getMoreQuizzs);
     return () => window.removeEventListener('scroll', getMoreQuizzs);
-  }, [dispatch, quizzs.length, rootQuizzs.length]);
+  }, [bookmarkView, getListQuizzScroll, quizzs.length, rootQuizzs.length]);
 
-  const renderQuizzBoardList = () => {
-    const isHasCardAnimation = cardAnimation.value;
-    if (quizzWithBookmark && quizzWithBookmark.length > 0) {
-      return (
-        <div
-          className={clsx('quizz-board', {
-            [classes.hasCardAnimation]: isHasCardAnimation,
-          })}
-        >
-          <QuizzBoardList quizzs={quizzWithBookmark} options={options} />
-          {loading && <CircleLoading />}
-        </div>
-      );
-    }
-    return null;
-  };
+  const renderQuizzBoardList = () => (
+    <div
+      className={clsx('quizz-board', {
+        [classes.hasCardAnimation]: isHasCardAnimation,
+      })}
+    >
+      <QuizzBoardList quizzs={filterQuizz} options={options} />
+      {loading && <CircleLoading />}
+    </div>
+  );
 
-  if (!quizzWithBookmark || quizzWithBookmark.length === 0)
-    return <ModalLoading color="primary" />;
+  if (bookmarkView && filterQuizz.length === 0)
+    return <div>Bookmark Empty</div>;
+  if (filterQuizz.length === 0) return <ModalLoading color="primary" />;
   return (
     <div className={classes.main}>
       <Container maxWidth={maxWithContainer}>
@@ -108,4 +106,17 @@ function QuizzBoard() {
   );
 }
 
-export default QuizzBoard;
+const mapStateToProps = (state) => ({
+  rootQuizzs: getRootQuizz(state),
+  quizzs: getQuizzs(state),
+  bm: getBookmark(state),
+  loading: getLoadingQuizz(state),
+  options: getOptions(state),
+});
+
+const mapDispatchToProps = {
+  getListQuizz,
+  getListQuizzScroll,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizzBoard);

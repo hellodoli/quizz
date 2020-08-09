@@ -9,6 +9,10 @@ export const addBookmark = (payload) => ({
   payload,
 });
 
+/**
+ * @param {String} status
+ * @param {Object} payload
+ */
 export const toggleBookmark = (status, payload) => ({
   type: TOGGLE_BOOKMARK,
   status,

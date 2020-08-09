@@ -27,7 +27,6 @@ function QuizzBoardItemCard({
   console.log('reload QuizzBoardItemCard');
   const classes = quizzBoardItemCard();
   const aClass = quizzBoardItemActions();
-
   const toDetailUrl = `/quizzs/${id}`;
   return (
     <Card classes={classes} className="quizz-board-item">
@@ -65,7 +64,6 @@ function QuizzBoardItemCard({
               size: 'small',
               disableFocusRipple: true,
               disableRipple: true,
-              className: 'quizz-board-item-bookmark',
             }}
           />
         </div>

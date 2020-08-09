@@ -13,7 +13,7 @@ function* getListQuizzScroll() {
       optionsReducer: { view, space },
     } = yield select();
 
-    const { length } = quizzReducer.data;
+    const { length } = Object.keys(quizzReducer.data);
     const cardNeedScroll = getCardNumberToScroll(
       window.innerWidth,
       view,

@@ -37,6 +37,18 @@ export const getMixBookmarkWithQuizz = (quizzs, bookmarkList) => {
   return mixQuizz;
 };
 
+/**
+ *
+ * @param {Array} quizzs
+ * @param {Object} bookmarkList
+ */
+export const mixBookmarkWithQuizz = (quizzs, bookmarkList) => {
+  for (let i = 0; i < quizzs.length; i++) {
+    const quizz = quizzs[i];
+    quizz.bookmark = !!bookmarkList[quizz.id];
+  }
+};
+
 export const isExistBookmark = (id, bookmarkList) => {
   if (bookmarkList && bookmarkList[id]) return true;
   return false;

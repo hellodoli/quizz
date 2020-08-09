@@ -15,7 +15,6 @@ const LayoutReview = () => {
     getCardNumber(window.innerWidth, view, space)
   );
   const cardHolder = cardNumber * 2;
-
   const classes = layoutPreviewClass({
     view,
     space,

@@ -14,6 +14,7 @@ import SwitchView from '../Switch';
 const PreferenceItem = ({ id, value, name, handleChangePre }) => {
   const classes = preferencesLayoutClass();
   const activeOption = clsx(classes.root, { 'quizz-active-option': value });
+  if (id === 'bookmark') return null;
   return (
     <div className={activeOption}>
       <div className={classes.switch}>
@@ -68,4 +69,5 @@ const mapDispatchToProps = {
   preChangeDLTheme,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PreferencesLayout);
+const enhance = connect(mapStateToProps, mapDispatchToProps);
+export default enhance(PreferencesLayout);

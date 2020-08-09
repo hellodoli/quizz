@@ -9,7 +9,7 @@ import { checkValidKeyObject } from '../utils/object';
 
 const viewArr = ['card', 'row'];
 const spaceArr = ['roomy', 'cozy', 'eco'];
-const preferencesArr = ['cardAnimation', 'dlTheme'];
+const preferencesArr = ['cardAnimation', 'dlTheme', 'bookmark'];
 
 const defaultOptions = {
   view: 'card',
@@ -23,6 +23,11 @@ const defaultOptions = {
     dlTheme: {
       id: 'dlTheme',
       name: 'Light theme',
+      value: false,
+    },
+    bookmark: {
+      id: 'bookmark',
+      name: 'Bookmark view',
       value: false,
     },
   },
@@ -52,6 +57,8 @@ const getOptions = () => {
     ) {
       curView.view = view;
       curView.space = space;
+
+      preferences.bookmark.value = false; // default is false
       curView.preferences = preferences;
     } else {
       errorAction();

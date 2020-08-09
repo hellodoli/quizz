@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import switchViewClass from './styled';
 
-function SwitchView(props) {
-  const {
-    leftIcon: LeftI,
-    rightIcon: RightI,
-    barIcon: BarI,
-    isActive,
-    defaultPos,
-    circleBar,
-    width,
-    height,
-    ...rest // onClick, className, ...
-  } = props;
-
+function SwitchView({
+  leftIcon: LeftI,
+  rightIcon: RightI,
+  barIcon: BarI,
+  isActive,
+  defaultPos,
+  circleBar,
+  width,
+  height,
+  ...rest // onClick, className, ...
+}) {
   const classes = switchViewClass({
     isActive,
     defaultPos,
@@ -70,7 +68,7 @@ function SwitchView(props) {
   return (
     <div className={classes.rootSwitchView} {...rest}>
       <div className={classes.slider} />
-      <div className={classes.holder}>{BarI && 'Bar has IconBar'}</div>
+      <div className={classes.holder}>{BarI && <BarI />}</div>
       {/* render Icon */}
       {renderIcon()}
     </div>
@@ -80,7 +78,7 @@ function SwitchView(props) {
 SwitchView.defaultProps = {
   leftIcon: null,
   rightIcon: null,
-  barIcon: false,
+  barIcon: null,
   width: 112,
   height: 32,
   isActive: false,

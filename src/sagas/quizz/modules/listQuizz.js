@@ -5,6 +5,7 @@ import {
 } from '../../../constants/quizz';
 import { apiTimeout } from '../../../config/api';
 import { getCardNumber } from '../../../utils/quizzs';
+import { mixBookmarkWithQuizz } from '../../../utils/bookmark';
 // API
 import requestListQuizz from '../api/listQuizz';
 
@@ -18,10 +19,15 @@ function* getListQuizz() {
     if (res) {
       if (res.data && res.data.quizzs) {
         const {
+          bookmarkReducer: bookmarks,
           optionsReducer: { view, space },
         } = yield select();
         const cardNeedScroll =
           getCardNumber(window.innerWidth, view, space) * 2;
+
+        // adding bookmark property
+        mixBookmarkWithQuizz(Object.values(res.data.quizzs), bookmarks);
+
         yield put({
           type: GET_LIST_QUIZZ_SUCCESS,
           payload: res.data.quizzs,
