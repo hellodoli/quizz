@@ -8,6 +8,7 @@ import { getTheme } from './selector/theme';
 // Containers
 import Home from './containers/Home';
 import Quizzs from './containers/Quizzs';
+import Header from './components/Header';
 
 // Dynamic loadable
 /* const DynamicImport = (componentImport) =>
@@ -29,6 +30,7 @@ function App() {
         <CssBaseline />
         <GlobalCss />
         {/* Main App */}
+        <Header />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/quizzs" component={Quizzs} />

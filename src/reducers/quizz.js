@@ -85,8 +85,6 @@ const quizzReducer = (state = initialState, action) => {
         startIndex,
         cardNeedScroll
       );
-      console.log(startIndex);
-      console.log(cardNeedScroll);
       return {
         ...state,
         loading: false,

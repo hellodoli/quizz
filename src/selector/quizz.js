@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
+import { create } from 'react-test-renderer';
 
 const rootQuizzSelector = (state) => Object.values(state.quizzReducer.allData);
+const rootQuizzNoArrSelector = (state) => state.quizzReducer.allData;
 const quizzsSelector = (state) => Object.values(state.quizzReducer.data);
 
 const loadingSelector = (state) => state.quizzReducer.loading;
@@ -30,6 +32,11 @@ export const getQuizzs = createSelector([quizzsSelector], (quizzs) => quizzs);
 
 export const getRootQuizz = createSelector(
   [rootQuizzSelector],
+  (rootQuizz) => rootQuizz
+);
+
+export const getRootQuizzNoArr = createSelector(
+  [rootQuizzNoArrSelector],
   (rootQuizz) => rootQuizz
 );
 

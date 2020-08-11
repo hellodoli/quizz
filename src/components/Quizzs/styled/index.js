@@ -142,3 +142,9 @@ export const quizzBoardItemActions = makeStyles((theme) => {
     },
   };
 });
+
+export const quizzDetailItem = makeStyles((theme) => {
+  return {
+    root: {},
+  };
+});

@@ -10,6 +10,11 @@ export const getPreferences = createSelector(
   [preferencesSelector],
   (preferences) => preferences
 );
+export const getPreferencesBookmark = createSelector(
+  [preferencesSelector],
+  (preferences) => preferences.bookmark
+);
+
 export const getSpace = createSelector([spaceSelector], (space) => space);
 export const getView = createSelector([viewSelector], (view) => view);
 export const getSpaceAndView = createSelector(

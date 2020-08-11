@@ -1,5 +1,5 @@
 import React from 'react';
-import SourceLink from '../../components/Quizzs/SourceLink';
+import SourceLink from '../components/Quizzs/SourceLink';
 
 function CardItemHOC(WrappedComponent) {
   return (props) => {

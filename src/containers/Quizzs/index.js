@@ -3,16 +3,14 @@ import { Switch, Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import styles from './styled';
 // Conpoments
-import Header from '../../components/Header';
-import QuizzBoard from '../../components/Quizzs/QuizzBoard';
+import { QuizzBoard, QuizzDetail } from '../../components/Quizzs';
 
 function Quizzs({ classes }) {
   return (
     <div className={classes.root}>
-      <Header />
       <Switch>
         <Route exact path="/quizzs" component={QuizzBoard} />
-        <Route path="/quizzs/:id" render={() => <div>Testing</div>} />
+        <Route path="/quizzs/:id" component={QuizzDetail} />
       </Switch>
     </div>
   );

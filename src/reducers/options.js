@@ -4,70 +4,8 @@ import {
   CHANGE_TYPE_PREFERENCES,
 } from '../constants/options';
 import { CURRENT_OPTIONS } from '../constants/localStorage';
-import { getDataFromLS, setDataFromLS } from '../utils/localStorage';
-import { checkValidKeyObject } from '../utils/object';
-
-const viewArr = ['card', 'row'];
-const spaceArr = ['roomy', 'cozy', 'eco'];
-const preferencesArr = ['cardAnimation', 'dlTheme', 'bookmark'];
-
-const defaultOptions = {
-  view: 'card',
-  space: 'roomy',
-  preferences: {
-    cardAnimation: {
-      id: 'cardAnimation',
-      name: 'Card Animations',
-      value: true,
-    },
-    dlTheme: {
-      id: 'dlTheme',
-      name: 'Light theme',
-      value: false,
-    },
-    bookmark: {
-      id: 'bookmark',
-      name: 'Bookmark view',
-      value: false,
-    },
-  },
-};
-
-const json2String = (options) => {
-  return JSON.stringify(options);
-};
-
-const getOptions = () => {
-  const ls = window.localStorage;
-  const curView = { ...defaultOptions };
-  const errorAction = () => {
-    ls.removeItem(CURRENT_OPTIONS);
-    ls.setItem(CURRENT_OPTIONS, json2String(defaultOptions));
-  };
-  const state = getDataFromLS(CURRENT_OPTIONS);
-  if (state.data) {
-    const { view, space, preferences } = state.data;
-    if (
-      view &&
-      viewArr.includes(view) &&
-      space &&
-      spaceArr.includes(space) &&
-      preferences &&
-      checkValidKeyObject(preferences, preferencesArr)
-    ) {
-      curView.view = view;
-      curView.space = space;
-
-      preferences.bookmark.value = false; // default is false
-      curView.preferences = preferences;
-    } else {
-      errorAction();
-    }
-  } else {
-    errorAction();
-  }
-  return curView;
-};
+import { setDataFromLS } from '../utils/localStorage';
+import { getOptions } from '../utils/options';
 
 const optionsReducer = (state = getOptions(), action) => {
   switch (action.type) {

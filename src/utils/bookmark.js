@@ -2,7 +2,6 @@ import { CURRENT_BOOKMARKS } from '../constants/localStorage';
 import { getDataFromLS, setDataFromLS } from './localStorage';
 
 /**
- *
  * @param {Object} bookmarkList
  */
 export const setBookmarkList = (bookmarks) => {
@@ -23,7 +22,6 @@ export const getBookmarkList = () => {
 };
 
 /**
- *
  * @param {Array} quizzs
  * @param {Object} bookmarkList
  */
@@ -38,7 +36,6 @@ export const getMixBookmarkWithQuizz = (quizzs, bookmarkList) => {
 };
 
 /**
- *
  * @param {Array} quizzs
  * @param {Object} bookmarkList
  */
@@ -49,6 +46,10 @@ export const mixBookmarkWithQuizz = (quizzs, bookmarkList) => {
   }
 };
 
+/**
+ * @param {Number} id
+ * @param {Object} bookmarkList
+ */
 export const isExistBookmark = (id, bookmarkList) => {
   if (bookmarkList && bookmarkList[id]) return true;
   return false;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouteLink } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, IconButton, Link } from '@material-ui/core';
 import {
   Dashboard as DashboardIcon,
@@ -8,7 +8,7 @@ import {
   Bookmark as BookmarkIcon,
 } from '@material-ui/icons';
 import { changeTypePreferences } from '../../actions/options';
-import { getPreferences } from '../../selector/options';
+import { getPreferencesBookmark } from '../../selector/options';
 import { header as headerClass } from './styled';
 // Components
 import SettingView from '../SettingView';
@@ -20,13 +20,11 @@ const WrapperSettingView = React.memo(({ isOpenSetting }) => {
   return <SettingView />;
 });
 
-function Header({
-  preferences: {
-    bookmark: { value },
-  },
-  changeTypePreferences,
-}) {
+function Header() {
   console.log('Header re-render');
+  const dispatch = useDispatch();
+  const bookmark = useSelector(getPreferencesBookmark);
+  const { value } = bookmark;
   const classes = headerClass();
   const [isOpenSetting, setIsOpenSetting] = useState(false);
 
@@ -36,7 +34,7 @@ function Header({
 
   const toggleBookmarkView = () => {
     const pre = { key: 'bookmark', value: !value };
-    changeTypePreferences(pre);
+    dispatch(changeTypePreferences(pre));
   };
 
   return (
@@ -97,13 +95,4 @@ function Header({
   );
 }
 
-const mapStateToProps = (state) => ({
-  preferences: getPreferences(state),
-});
-
-const mapDispatchToProps = {
-  changeTypePreferences,
-};
-
-const enhance = connect(mapStateToProps, mapDispatchToProps);
-export default enhance(Header);
+export default Header;
