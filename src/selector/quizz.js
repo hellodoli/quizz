@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { create } from 'react-test-renderer';
 
 const rootQuizzSelector = (state) => Object.values(state.quizzReducer.allData);
 const rootQuizzNoArrSelector = (state) => state.quizzReducer.allData;

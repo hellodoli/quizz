@@ -4,11 +4,22 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 
+const checkRatio = (ratio) => {
+  switch (ratio) {
+    case '1x1':
+      return '100%';
+    case '16x9':
+      return '56.25%';
+    default:
+      return ratio;
+  }
+};
+
 const lazyImageClass = makeStyles(() => ({
   wrapp: {
     position: 'relative',
     width: '100%',
-    paddingTop: ({ ratio }) => (ratio === '1x1' ? '100%' : '56.25%'),
+    paddingTop: ({ ratio }) => checkRatio(ratio),
   },
   positionImg: {
     position: 'absolute',
@@ -50,10 +61,11 @@ function LazyImage(props) {
     placeholder,
     alt,
     title,
+    isLazy,
     ...other // className or something else
   } = props;
 
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(!isLazy);
   const classes = lazyImageClass({ loaded, ratio });
   const imgClasses = clsx(classes.positionImg, classes.img, { loaded });
   const ref = useRef();
@@ -68,21 +80,23 @@ function LazyImage(props) {
         ele.src = src;
         ele.alt = alt;
         ele.title = title;
-        ele.setAttribute('width', width);
-        ele.setAttribute('height', height);
+        // ele.setAttribute('width', width);
+        // ele.setAttribute('height', height);
         ele.classList.add('loaded');
       };
       setLoaded(true);
     }
-  }, [alt, height, loaded, src, title, width]);
+  }, [alt, loaded, src, title]);
 
   useEffect(() => {
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
+    if (isLazy) {
+      setTimeout(handleScroll);
+      window.addEventListener('scroll', handleScroll);
+    }
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      if (isLazy) window.removeEventListener('scroll', handleScroll);
     };
-  }, [alt, handleScroll, height, loaded, src, title, width]);
+  }, [alt, handleScroll, height, isLazy, loaded, src, title, width]);
 
   return (
     <div className={classes.wrapp}>
@@ -96,11 +110,13 @@ function LazyImage(props) {
         />
       )}
       <img
-        ref={ref}
-        src={placeholder}
         className={imgClasses}
-        alt=""
-        title=""
+        ref={ref}
+        src={isLazy ? placeholder : src}
+        alt={isLazy ? '' : alt}
+        title={isLazy ? '' : title}
+        width={width}
+        height={height}
         {...other}
       />
     </div>
@@ -108,11 +124,12 @@ function LazyImage(props) {
 }
 
 LazyImage.defaultProps = {
-  placeholder: null,
   title: '',
+  placeholder: null,
   width: '100%',
   height: '100%',
   ratio: '16x9',
+  isLazy: true,
 };
 
 LazyImage.propTypes = {
@@ -123,6 +140,7 @@ LazyImage.propTypes = {
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   ratio: PropTypes.string,
+  isLazy: PropTypes.bool,
 };
 
 export default LazyImage;

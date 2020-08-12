@@ -27,17 +27,14 @@ const mapDispatchToProps = {
 
 /**
  * @param {Component} WrappedComponent
- * @param {String} views
  */
-function QuizzContainerHOC(WrappedComponent, views) {
+function QuizzContainerHOC(WrappedComponent) {
   const classes = quizzGeneral();
   class QuizzContainer extends React.PureComponent {
     componentDidMount() {
       const { getListQuizz, quizzs } = this.props;
-      if (views === 'board' || (views === 'detail' && quizzs.length === 0)) {
-        // fetch Quizzs
-        getListQuizz();
-      }
+      // fetch Quizzs
+      if (quizzs.length === 0) getListQuizz();
     }
 
     render() {

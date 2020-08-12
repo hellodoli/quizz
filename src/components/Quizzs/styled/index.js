@@ -5,10 +5,18 @@ export const quizzGeneral = makeStyles((theme) => {
     main: {
       position: 'relative',
       width: '100%',
+      // css variable
+      '--pd-inner': '5rem 0',
     },
     // All other style in $main
     inner: {
-      padding: `${theme.typography.pxToRem(80)} 0`,
+      padding: 'var(--pd-inner)',
+    },
+    detailWrapp: {
+      margin: '0 auto',
+      [theme.breakpoints.up('md')]: {
+        maxWidth: '660px',
+      },
     },
     hasCardAnimation: {
       '& .quizz-board-item': {
@@ -143,8 +151,62 @@ export const quizzBoardItemActions = makeStyles((theme) => {
   };
 });
 
+// QuizzDetailItem
 export const quizzDetailItem = makeStyles((theme) => {
+  const { palette } = theme;
+  const getchoiceItemStatus = ({ isDirty, isActive, isRightAns }) => {
+    let background = palette.action.hover;
+    const pointerEvents = isDirty && 'none';
+    const cursor = !isDirty && 'pointer';
+    const opacity = isDirty && !isActive ? 0.4 : 1;
+    if (isActive) {
+      background = isRightAns ? palette.success.main : palette.error.main;
+    }
+    return {
+      cursor,
+      pointerEvents,
+      opacity,
+      background,
+      borderRadius: isActive && isRightAns ? '5px' : '30px',
+      '&:hover': {
+        background: !isDirty && palette.action.disabled,
+      },
+    };
+  };
   return {
-    root: {},
+    choiceTitle: {
+      marginBottom: '1rem',
+    },
+    choiceItem: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      fontWeight: 700,
+      width: '100%',
+      padding: '10px',
+      borderRadius: '30px',
+      background: theme.palette.action.disabled,
+      '& + $choiceItem': {
+        marginTop: '.5rem',
+      },
+    },
+    choiceItemStatus: (props) => getchoiceItemStatus(props),
+    // detail
+    choiceItemLabel: {
+      flex: 'none',
+      display: 'block',
+      width: '30px',
+      height: '30px',
+      lineHeight: '30px',
+      borderRadius: '50%',
+      textAlign: 'center',
+      background: palette.background.paper,
+      marginRight: '.5rem',
+    },
+    choiceItemExplain: {
+      marginTop: '.5rem',
+      color:
+        palette.type === 'dark' ? palette.common.black : palette.common.white,
+    },
   };
 });

@@ -80,8 +80,9 @@ function areEqual(prevProps, nextProps) {
     prevProps.title !== nextProps.title ||
     prevProps.author !== nextProps.author ||
     prevProps.bookmark !== nextProps.bookmark
-  )
+  ) {
     return false;
+  }
   return true;
 }
 

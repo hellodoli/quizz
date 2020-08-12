@@ -6,9 +6,9 @@ import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import GlobalCss from './theme/GlobalCss';
 import { getTheme } from './selector/theme';
 // Containers
+import Header from './components/Header';
 import Home from './containers/Home';
 import Quizzs from './containers/Quizzs';
-import Header from './components/Header';
 
 // Dynamic loadable
 /* const DynamicImport = (componentImport) =>
@@ -30,12 +30,14 @@ function App() {
         <CssBaseline />
         <GlobalCss />
         {/* Main App */}
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/quizzs" component={Quizzs} />
-          <Route path="*" component={Page404} />
-        </Switch>
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/quizzs" component={Quizzs} />
+            <Route path="*" component={Page404} />
+          </Switch>
+        </div>
       </div>
     </ThemeProvider>
   );
