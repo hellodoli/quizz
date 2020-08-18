@@ -6,6 +6,7 @@ import {
   Dashboard as DashboardIcon,
   GitHub as GitHubIcon,
   Bookmark as BookmarkIcon,
+  Home as HomeIcon,
 } from '@material-ui/icons';
 import { changeTypePreferences } from '../../actions/options';
 import { getPreferencesBookmark } from '../../selector/options';
@@ -40,11 +41,23 @@ function Header() {
   return (
     <div>
       <div className={classes.headerRoot}>
-        <Container>
+        <Container maxWidth={false}>
           <div className={classes.wrapp}>
-            <IconButton edge="start" onClick={toggleSettingView}>
-              <DashboardIcon fontSize="small" />
-            </IconButton>
+            <div>
+              <Link
+                component={RouteLink}
+                underline="none"
+                color="textPrimary"
+                to="/quizzs"
+              >
+                <IconButton edge="start" color="primary">
+                  <HomeIcon fontSize="small" />
+                </IconButton>
+              </Link>
+              <IconButton onClick={toggleSettingView}>
+                <DashboardIcon fontSize="small" />
+              </IconButton>
+            </div>
 
             {/* Boomark Switch */}
             <Tooltip
@@ -68,8 +81,8 @@ function Header() {
             {/* Personal Link */}
             <div>
               <Link
-                underline="none"
                 component={RouteLink}
+                underline="none"
                 color="textPrimary"
                 to="/"
               >

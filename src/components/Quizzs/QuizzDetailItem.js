@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { v1 as uuidv1 } from 'uuid';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { RootRef, Card, CardContent, Typography } from '@material-ui/core';
 import { quizzDetailItem } from './styled';
 import LazyImage from './LazyImage';
 
@@ -21,33 +21,42 @@ const convertLabel = (index) => {
 };
 
 const Choice = ({
-  index,
+  index: choiceIndex,
   ans,
   correctAnswer,
   explain,
-  tool: { isDirty, status, index: indexed },
+  tool: { isDirty, index: chooseIndex },
   checkAns,
 }) => {
   const isRightAns = ans === correctAnswer;
-  const isActive = isDirty && (ans === correctAnswer || index === indexed); // right and wrong ans
+  const isActive =
+    isDirty && (ans === correctAnswer || choiceIndex === chooseIndex); // right and wrong ans
   const classes = quizzDetailItem({ isDirty, isActive, isRightAns });
   const className = clsx(classes.choiceItem, classes.choiceItemStatus);
   const Explain = () => {
-    if (status === null || ans !== correctAnswer) return null;
-    return (
-      <Typography
-        variant="body1"
-        component="p"
-        className={classes.choiceItemExplain}
-      >
-        {explain}
-      </Typography>
-    );
+    if (isDirty && isRightAns) {
+      return (
+        <Typography
+          variant="body1"
+          component="p"
+          className={classes.choiceItemExplain}
+        >
+          {explain}
+        </Typography>
+      );
+    }
+    return null;
   };
 
   return (
-    <div className={className} onClick={() => checkAns(ans, index)}>
-      <span className={classes.choiceItemLabel}>{convertLabel(index)}</span>
+    <div
+      role="button"
+      className={className}
+      onClick={() => checkAns(choiceIndex, ans)}
+    >
+      <span className={classes.choiceItemLabel}>
+        {convertLabel(choiceIndex)}
+      </span>
       <div>
         <span>{ans}</span>
         <Explain />
@@ -57,63 +66,72 @@ const Choice = ({
 };
 
 function QuizzDetailItem({
+  index,
   img,
   question,
   answers,
   correct_answer: correctAnswer,
   explain,
+  questRef,
+  // QuizzDetail
+  handleSetQuestion,
 }) {
+  console.log('re-render QuizzDetailItem');
   const classes = quizzDetailItem();
   const choiceProps = { explain, correctAnswer };
+  // const quizzItemRef = useRef(null);
   const [tool, setTool] = useState({
     isDirty: false,
-    status: null,
     index: -1,
   });
 
-  const checkAns = useCallback(
-    (ans, index) => {
-      if (tool.isDirty) return;
-      setTool({
-        ...tool,
-        isDirty: true,
-        status: !!(correctAnswer === ans),
-        index,
-      });
-    },
-    [correctAnswer, tool]
-  );
+  const checkAns = (choiceIndex, ans) => {
+    if (tool.isDirty) return;
+    handleSetQuestion(index, ans === correctAnswer);
+    setTool({
+      ...tool,
+      isDirty: true,
+      index: choiceIndex,
+    });
+  };
 
   return (
-    <Card className="quizz-board-detail-item">
-      {/* CardMedia */}
-      <LazyImage
-        isLazy={false}
-        image={img.url}
-        title={img.title}
-        alt={img.alt}
-      />
-      <CardContent className={classes.choiceWrapp}>
-        <div className={classes.choiceTitle}>
-          <Typography variant="body1" component="h4">
-            {question}
-          </Typography>
-        </div>
-        <div>
-          {answers.map((ans, index) => (
-            <Choice
-              key={uuidv1()}
-              index={index}
-              ans={ans}
-              checkAns={checkAns}
-              tool={tool}
-              {...choiceProps}
-            />
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <RootRef rootRef={questRef}>
+      <Card className={clsx('quizz-board-detail-item', classes.wrapp)}>
+        {/* CardMedia */}
+        <LazyImage
+          isLazy={false}
+          image={img.url}
+          title={img.title}
+          alt={img.alt}
+        />
+        <CardContent className={classes.choiceWrapp}>
+          <div className={classes.choiceTitle}>
+            <Typography variant="body1" component="h4">
+              {question}
+            </Typography>
+          </div>
+          <div>
+            {answers.map((ans, index) => (
+              <Choice
+                key={uuidv1()}
+                index={index}
+                ans={ans}
+                checkAns={checkAns}
+                tool={tool}
+                {...choiceProps}
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </RootRef>
   );
 }
 
-export default QuizzDetailItem;
+const arePropsEqual = (prevProps, nextProps) => {
+  if (prevProps.isAns !== nextProps.isAns) return false;
+  return true;
+};
+
+export default React.memo(QuizzDetailItem, arePropsEqual);

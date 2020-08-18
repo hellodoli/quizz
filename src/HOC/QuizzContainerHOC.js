@@ -10,6 +10,8 @@ import {
   getRootQuizz,
   getRootQuizzNoArr,
 } from '../selector/quizz';
+// Components
+import { ModalLoading } from '../components/Loading';
 // Styles
 import { quizzGeneral } from '../components/Quizzs/styled';
 
@@ -40,9 +42,11 @@ function QuizzContainerHOC(WrappedComponent) {
     render() {
       console.log('re-render QuizzContainerHOC');
       const {
+        quizzs,
         options: { space },
         children,
       } = this.props;
+      if (quizzs.length === 0) return <ModalLoading />;
       const maxWithContainer = space === 'eco' ? false : 'lg';
       return (
         <div className={classes.main}>

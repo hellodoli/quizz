@@ -174,6 +174,11 @@ export const quizzDetailItem = makeStyles((theme) => {
     };
   };
   return {
+    wrapp: {
+      '& + $wrapp': {
+        marginTop: '1.5rem',
+      },
+    },
     choiceTitle: {
       marginBottom: '1rem',
     },
@@ -207,6 +212,53 @@ export const quizzDetailItem = makeStyles((theme) => {
       marginTop: '.5rem',
       color:
         palette.type === 'dark' ? palette.common.black : palette.common.white,
+    },
+  };
+});
+
+// QuizzDetailResult (classes)
+export const quizzDetailResult = makeStyles((theme) => {
+  return {
+    wrapper: {
+      marginTop: '3rem',
+      textAlign: 'center',
+    },
+    contentResult: {
+      padding: '.5rem',
+    },
+    dividerLine: {
+      display: 'block',
+      width: '100%',
+      height: '4px',
+      background: theme.palette.divider,
+      margin: '.5rem 0',
+    },
+    number: {
+      display: 'inline-block',
+      verticalAlign: 'middle',
+      padding: '4px',
+    },
+    numberSuccess: {
+      color: theme.palette.success.main,
+    },
+    numberTotal: {
+      color: theme.palette.error.main,
+    },
+  };
+});
+
+export const quizzDetailSelect = makeStyles((theme) => {
+  return {
+    wrappItem: {
+      '&.active': {
+        color: theme.palette.success.main,
+      },
+    },
+    contentItem: {
+      display: 'block',
+      width: '100%',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
     },
   };
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import withQuizzContainer from '../../HOC/QuizzContainerHOC';
 // Components
 import QuizzBoardList from './QuizzBoardList';
-import QuizzDetailUse from './QuizzDetail';
+import QuizzDetailLayout from './QuizzDetailLayout';
 
 function QuizzBoard(props) {
   const QuizzBoardWrapp = withQuizzContainer(QuizzBoardList);
@@ -10,8 +10,8 @@ function QuizzBoard(props) {
 }
 
 function QuizzDetail(props) {
-  const QuizzDetailWithHOC = withQuizzContainer(QuizzDetailUse);
-  return <QuizzDetailWithHOC {...props} />;
+  const QuizzDetailWrapp = withQuizzContainer(QuizzDetailLayout);
+  return <QuizzDetailWrapp {...props} />;
 }
 
 export { QuizzBoard, QuizzDetail };

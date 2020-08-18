@@ -52,11 +52,11 @@ function QuizzBoardList({ loading, options, rootQuizzs, quizzs }) {
     };
     window.addEventListener('scroll', getMoreQuizzs);
     return () => window.removeEventListener('scroll', getMoreQuizzs);
-  });
+  }, [bookmarkView, dispatch, quizzs.length, rootQuizzs.length]);
 
   if (bookmarkView && filterQuizz.length === 0)
     return <div>Bookmark Empty</div>;
-  if (filterQuizz.length === 0) return <ModalLoading color="primary" />;
+  if (filterQuizz.length === 0) return <ModalLoading />;
   return (
     <div
       className={clsx('quizz-board', {

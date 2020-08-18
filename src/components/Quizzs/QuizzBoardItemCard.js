@@ -74,7 +74,7 @@ function QuizzBoardItemCard({
 
 function areEqual(prevProps, nextProps) {
   const prevImg = prevProps.questions[0].img.url;
-  const nextImg = prevProps.questions[0].img.url;
+  const nextImg = nextProps.questions[0].img.url;
   if (
     prevImg !== nextImg ||
     prevProps.title !== nextProps.title ||

@@ -1,21 +1,5 @@
 import { makeStyles } from '@material-ui/core';
 
-const modalLoading = makeStyles(() => {
-  const container = (isFullScreen) => {
-    if (isFullScreen) return {};
-    return {
-      position: 'relative',
-      display: 'flex',
-      width: '100%',
-      alignItems: 'center',
-      justifyContent: 'center',
-    };
-  };
-  return {
-    root: ({ isFullScreen }) => container(isFullScreen),
-  };
-});
-
 const circleLoading = makeStyles(() => {
   const container = (pos, gapSize) => {
     let justifyContent = 'center';
@@ -35,4 +19,4 @@ const circleLoading = makeStyles(() => {
   };
 });
 
-export { modalLoading, circleLoading };
+export { circleLoading };
