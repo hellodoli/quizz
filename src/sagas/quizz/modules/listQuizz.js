@@ -23,7 +23,9 @@ function* getListQuizz() {
           optionsReducer: { view, space },
         } = yield select();
         const cardNeedScroll =
-          getCardNumber(window.innerWidth, view, space) * 2;
+          view === 'card'
+            ? getCardNumber(window.innerWidth, view, space) * 2
+            : 16;
 
         // adding bookmark property
         mixBookmarkWithQuizz(Object.values(res.data.quizzs), bookmarks);

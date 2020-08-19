@@ -3,14 +3,16 @@ import { makeStyles } from '@material-ui/core/styles';
 export const quizzGeneral = makeStyles((theme) => {
   return {
     main: {
-      position: 'relative',
-      width: '100%',
       // css variable
       '--pd-inner': '5rem 0',
     },
     // All other style in $main
     inner: {
       padding: 'var(--pd-inner)',
+    },
+    layoutDetailWrapp: {
+      display: 'flex',
+      position: 'relative',
     },
     detailWrapp: {
       margin: '0 auto',
@@ -216,7 +218,7 @@ export const quizzDetailItem = makeStyles((theme) => {
   };
 });
 
-// QuizzDetailResult (classes)
+// QuizzDetailResult
 export const quizzDetailResult = makeStyles((theme) => {
   return {
     wrapper: {
@@ -249,9 +251,19 @@ export const quizzDetailResult = makeStyles((theme) => {
 
 export const quizzDetailSelect = makeStyles((theme) => {
   return {
-    wrappItem: {
-      '&.active': {
-        color: theme.palette.success.main,
+    root: {
+      flex: 0,
+      position: 'fixed',
+      top: 50,
+      width: 240,
+      '& .MuiListItemText-root': {
+        display: '-webkit-box',
+        '-webkit-line-clamp': 2,
+        '-webkit-box-orient': 'vertical',
+        'text-overflow': 'ellipsis',
+        overflow: 'hidden',
+        marginTop: 0,
+        marginBottom: 0,
       },
     },
     contentItem: {
@@ -262,3 +274,15 @@ export const quizzDetailSelect = makeStyles((theme) => {
     },
   };
 });
+
+export const quizzDetailSelectItem = makeStyles((theme) => ({
+  root: {
+    '&.active': {
+      color: theme.palette.primary.light,
+    },
+  },
+  iconMark: {
+    color: ({ isRight }) =>
+      isRight ? theme.palette.success.main : theme.palette.error.main,
+  },
+}));

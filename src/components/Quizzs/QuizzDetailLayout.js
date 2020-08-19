@@ -4,7 +4,7 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import { quizzGeneral, quizzDetailResult } from './styled';
 // Components
 import { ModalLoading } from '../Loading';
-import AutoFixedWrapp from '../AutoFixedWrapp';
+import PageNotFound from '../PageNotFound';
 import QuizzDetailSelect from './QuizzDetailSelect';
 import QuizzDetailItem from './QuizzDetailItem';
 
@@ -88,15 +88,13 @@ function QuizzDetail({ id, questions, handleSetQuestion }) {
 
 function QuizzDetailLayout({ match, rootQuizzsNoArr: rootQuizz }) {
   const refContainer = useRef(null); // for container wrapp
+  const classes = quizzGeneral();
   const id = parseInt(match.params.id, 10);
   const [questions, setQuestion] = useState([]);
 
   useEffect(() => {
     const root = rootQuizz[id];
     if (root && root.questions) {
-      // make 2 property for using
-      // isAns: null || true || false
-      // questRef: React.createRef()
       const cloneQuestion = root.questions.slice();
       for (let i = 0; i < cloneQuestion.length; i++) {
         cloneQuestion[i].isAns = null;
@@ -115,13 +113,11 @@ function QuizzDetailLayout({ match, rootQuizzsNoArr: rootQuizz }) {
     setQuestion(cloneQuestion);
   };
 
-  if (questions === null) return <div>Not Found Questions</div>;
+  if (questions === null) return <PageNotFound />;
   if (questions.length === 0) return <ModalLoading />;
   return (
-    <div ref={refContainer} style={{ position: 'relative' }}>
-      <AutoFixedWrapp containerRef={refContainer}>
-        <QuizzDetailSelect containerRef={refContainer} questions={questions} />
-      </AutoFixedWrapp>
+    <div ref={refContainer} className={classes.layoutDetailWrapp}>
+      <QuizzDetailSelect containerRef={refContainer} questions={questions} />
       <QuizzDetail
         id={id}
         questions={questions}

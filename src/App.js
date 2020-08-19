@@ -5,6 +5,8 @@ import { Switch, Route } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import GlobalCss from './theme/GlobalCss';
 import { getTheme } from './selector/theme';
+// components
+import PageNotFound from './components/PageNotFound';
 // Containers
 import Header from './components/Header';
 import Home from './containers/Home';
@@ -16,10 +18,6 @@ import Quizzs from './containers/Quizzs';
     loader: componentImport,
     loading: () => null,
   }); */
-
-function Page404() {
-  return <div>Hello, This is 404 page !!!!</div>;
-}
 
 function App() {
   const theme = useSelector(getTheme);
@@ -35,7 +33,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/quizzs" component={Quizzs} />
-            <Route path="*" component={Page404} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         </div>
       </div>

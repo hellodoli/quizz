@@ -1,6 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Link as RouteLink } from 'react-router-dom';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Link,
+  CardActionArea,
+} from '@material-ui/core';
 import { quizzBoardItemRow } from './styled';
 // Components
 import SourceLink from './SourceLink';
@@ -15,34 +22,45 @@ function QuizzBoardItemRow({
   bookmark,
 }) {
   const classes = quizzBoardItemRow();
+  const toDetailUrl = `/quizzs/${id}`;
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <div className={classes.typoWrapp}>
-          <Typography variant="subtitle1">{title}</Typography>
-        </div>
+      <Link
+        underline="none"
+        component={RouteLink}
+        to={toDetailUrl}
+        color="textPrimary"
+        className="quizz-board-item-link"
+      >
+        <CardActionArea>
+          <CardContent>
+            <div className={classes.typoWrapp}>
+              <Typography variant="subtitle1">{title}</Typography>
+            </div>
 
-        <div
-          className={clsx(
-            classes.reveal,
-            classes.subTitleWrapp,
-            classes.currentItem
-          )}
-        >
-          <Typography variant="subtitle2">{publicTime}</Typography>
-        </div>
+            <div
+              className={clsx(
+                classes.reveal,
+                classes.subTitleWrapp,
+                classes.currentItem
+              )}
+            >
+              <Typography variant="subtitle2">{publicTime}</Typography>
+            </div>
 
-        {/* Link to Source */}
-        {source ? (
-          <div className={clsx(classes.reveal, classes.currentItem)}>
-            <SourceLink
-              rootSource={rootSource}
-              source={source}
-              iconButtonProps={{ size: 'small' }}
-            />
-          </div>
-        ) : null}
-      </CardContent>
+            {/* Link to Source */}
+            {source ? (
+              <div className={clsx(classes.reveal, classes.currentItem)}>
+                <SourceLink
+                  rootSource={rootSource}
+                  source={source}
+                  iconButtonProps={{ size: 'small' }}
+                />
+              </div>
+            ) : null}
+          </CardContent>
+        </CardActionArea>
+      </Link>
       {/* Bookmark */}
       <div className={clsx(classes.loveWrapp, classes.reveal)}>
         <Bookmark
