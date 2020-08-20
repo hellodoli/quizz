@@ -4,11 +4,12 @@ export const quizzGeneral = makeStyles((theme) => {
   return {
     main: {
       // css variable
-      '--pd-inner': '5rem 0',
+      '--pd-inner': '3rem',
     },
     // All other style in $main
     inner: {
-      padding: 'var(--pd-inner)',
+      paddingTop: 'var(--pd-inner)',
+      paddingBottom: 'var(--pd-inner)',
     },
     layoutDetailWrapp: {
       display: 'flex',
@@ -250,12 +251,31 @@ export const quizzDetailResult = makeStyles((theme) => {
 });
 
 export const quizzDetailSelect = makeStyles((theme) => {
+  const getColorText = (isRight) => {
+    if (isRight === null) return null;
+    if (isRight) return theme.palette.success.main;
+    return theme.palette.error.main;
+  };
   return {
     root: {
       flex: 0,
       position: 'fixed',
       top: 50,
       width: 240,
+      zIndex: 2,
+    },
+    menuList: {
+      background: theme.palette.background.default,
+      borderRadius: '8px',
+      border: `2px solid ${theme.palette.divider}`,
+      maxHeight: '560px',
+      overflowY: 'auto',
+    },
+    menuItem: {
+      '&.active': {
+        background: theme.palette.action.selected,
+      },
+      color: ({ isRight }) => getColorText(isRight),
       '& .MuiListItemText-root': {
         display: '-webkit-box',
         '-webkit-line-clamp': 2,
@@ -266,23 +286,13 @@ export const quizzDetailSelect = makeStyles((theme) => {
         marginBottom: 0,
       },
     },
-    contentItem: {
-      display: 'block',
-      width: '100%',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
+    headerSub: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    placeholder: {
+      height: 50,
     },
   };
 });
-
-export const quizzDetailSelectItem = makeStyles((theme) => ({
-  root: {
-    '&.active': {
-      color: theme.palette.primary.light,
-    },
-  },
-  iconMark: {
-    color: ({ isRight }) =>
-      isRight ? theme.palette.success.main : theme.palette.error.main,
-  },
-}));

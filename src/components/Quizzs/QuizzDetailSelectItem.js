@@ -1,7 +1,6 @@
 import React from 'react';
-import { ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
-import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons';
-import { quizzDetailSelectItem } from './styled';
+import { ListItem, ListItemText } from '@material-ui/core';
+import { quizzDetailSelect } from './styled';
 
 function QuizzDetailSelectItem({
   question,
@@ -10,24 +9,14 @@ function QuizzDetailSelectItem({
   index,
   scrollToView,
 }) {
-  const isRight = !!isAns;
-  const classes = quizzDetailSelectItem({ isRight });
-  const renderMarkIcon = (ans) => {
-    if (ans === null) return null;
-    return (
-      <ListItemIcon className={classes.iconMark}>
-        {isRight ? <CheckIcon /> : <CloseIcon />}
-      </ListItemIcon>
-    );
-  };
+  const classes = quizzDetailSelect({ isRight: isAns });
   return (
     <ListItem
       button
       innerRef={spyRef}
-      className={classes.root}
       onClick={() => scrollToView(index)}
+      className={classes.menuItem}
     >
-      {renderMarkIcon(isAns)}
       <ListItemText primary={question} />
     </ListItem>
   );

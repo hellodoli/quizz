@@ -52,8 +52,8 @@ function QuizzContainerHOC(WrappedComponent) {
         <div className={classes.main}>
           <Container maxWidth={maxWithContainer}>
             <div className={classes.inner}>
-              <WrappedComponent {...this.props} />
               {children}
+              <WrappedComponent {...this.props} />
             </div>
           </Container>
         </div>

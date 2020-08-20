@@ -9,6 +9,12 @@ if (window.location.host === 'zingnews.vn') {
     public_time: '',
     content: '',
     questions: [],
+    root_source: 'https://zingnews.vn/series/trac-nghiem-quizz.html',
+    source: '',
+  };
+  const getDefaultValue = (string) => {
+    if (!string || string === 'null') return '';
+    return string.trim();
   };
 
   quizz.id = new Date().getTime();
@@ -19,15 +25,11 @@ if (window.location.host === 'zingnews.vn') {
   quizz.public_time = document
     .querySelector('.the-article-publish')
     .innerHTML.trim();
+  quizz.source = getDefaultValue(window.location.href);
 
   const tableQuestions = document.querySelectorAll(
     '.the-article-body table.picture'
   );
-
-  const getDefaultValue = (string) => {
-    if (!string || string === 'null') return '';
-    return string.trim();
-  };
 
   const removeElementString = (string) => {
     const s = string.trim();

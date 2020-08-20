@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { List, ListSubheader, IconButton, Collapse } from '@material-ui/core';
-import { Menu as MenuIcon } from '@material-ui/icons';
+import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons';
 import { quizzDetailSelect } from './styled';
 // Components
 import QuizzDetailSelectItem from './QuizzDetailSelectItem';
@@ -47,20 +47,31 @@ function QuizzDetailSelect({ questions, containerRef }) {
     setIsOpenBookmark(!isOpenBookmark);
   };
 
+  const closeBookmark = () => {
+    setIsOpenBookmark(false);
+  };
+
+  const HeaderSub = () => (
+    <ListSubheader component="div" className={classes.headerSub} disableSticky>
+      <span>Questions</span>
+      <IconButton edge="end" size="small" onClick={closeBookmark}>
+        <CloseIcon />
+      </IconButton>
+    </ListSubheader>
+  );
+
   return (
     <div className={classes.root}>
-      <IconButton onClick={handleOpenBoomark}>
-        <MenuIcon />
-      </IconButton>
+      {isOpenBookmark ? (
+        <div className={classes.placeholder} />
+      ) : (
+        <IconButton onClick={handleOpenBoomark}>
+          <MenuIcon />
+        </IconButton>
+      )}
 
       <Collapse in={isOpenBookmark}>
-        <List
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Questions
-            </ListSubheader>
-          }
-        >
+        <List className={classes.menuList} subheader={<HeaderSub />}>
           {questions.map((quest, index) => {
             const key = `${quest.num}${quest.correctAns}`;
             return (

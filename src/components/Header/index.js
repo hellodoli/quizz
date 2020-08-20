@@ -84,7 +84,8 @@ function Header() {
                 component={RouteLink}
                 underline="none"
                 color="textPrimary"
-                to="/"
+                to={{ pathname: 'https://github.com/hellodoli/quizz' }}
+                target="_blank"
               >
                 <Tooltip
                   title="Check out my respository"

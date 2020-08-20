@@ -40,9 +40,8 @@ const Choice = ({
           variant="body1"
           component="p"
           className={classes.choiceItemExplain}
-        >
-          {explain}
-        </Typography>
+          dangerouslySetInnerHTML={{ __html: explain }}
+        />
       );
     }
     return null;
@@ -79,7 +78,6 @@ function QuizzDetailItem({
   console.log('re-render QuizzDetailItem');
   const classes = quizzDetailItem();
   const choiceProps = { explain, correctAnswer };
-  // const quizzItemRef = useRef(null);
   const [tool, setTool] = useState({
     isDirty: false,
     index: -1,
